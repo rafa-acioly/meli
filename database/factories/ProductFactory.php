@@ -24,6 +24,7 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
+            'user_id' => User::factory(),
             'buying_mode' => 'free',
             'woo_product_sku' => Str::random(5),
             'meli_product_sku' => Str::random(5)

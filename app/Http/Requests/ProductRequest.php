@@ -25,8 +25,8 @@ class ProductRequest extends FormRequest
     {
         return [
             'sku'               => 'required|alpha_num',
-            'name'              => 'required|alpha_num',
-            'description'       => 'required|alpha_num',
+            'name'              => 'required|string',
+            'description'       => 'required|string',
             'pictures'          => 'required|array',
             'category'          => 'required|array',
             'price'             => 'required|numeric',
