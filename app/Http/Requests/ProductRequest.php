@@ -28,7 +28,7 @@ class ProductRequest extends FormRequest
             'name'              => 'required|string',
             'description'       => 'required|string',
             'pictures'          => 'required|array',
-            'category'          => 'required|array',
+            'categories'        => 'required|array',
             'price'             => 'required|numeric',
             'stock_quantity'    => 'required|integer',
             'weight'            => 'required|numeric',

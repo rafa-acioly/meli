@@ -36,9 +36,15 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show($productID)
     {
-        //
+        $product = auth()->user()->products()->where('woo_product_sku', $productID);
+
+        if (!$product->exists()) {
+            return \response()->json(null, 201);
+        }
+
+        return $product->first();
     }
 
     /**
