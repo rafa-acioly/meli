@@ -37,13 +37,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        if (!$product->exists) {
-            return \response()->json([
-                'message' => 'resource does not exist.'
-            ], 201);
-        }
-
-        return $product->toJson();
+        //
     }
 
     /**

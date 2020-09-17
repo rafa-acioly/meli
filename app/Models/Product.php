@@ -12,6 +12,6 @@ class Product extends Model
     protected $fillable = ['buying_mode', 'woo_product_sku', 'meli_product_sku'];
 
     public function user() {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 }
