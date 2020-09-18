@@ -4,11 +4,13 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 
 class WoocommerceWebhook
 {
     const KEY_SECRET = 'secret';
+    const SIGNATURE_HEADER_KEY = 'x-wc-webhook-signature';
 
     /**
      * Handle an incoming request.
@@ -19,16 +21,12 @@ class WoocommerceWebhook
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!$request->hasHeader('x-wc-webhook-signature')) {
-            return response()->json([
-                'error' => 'missing "x-wc-webhook-signature" header'
-            ], 401);
+        if (!$request->hasHeader(self::SIGNATURE_HEADER_KEY)) {
+            abort(Response::HTTP_UNAUTHORIZED, 'missing "x-wc-webhook-signature" header');
         }
 
         if (!$this->hasValidSignature($request)) {
-            return response()->json([
-                'error' => 'webhook-signature does not match'
-            ], 401);
+            abort(Response::HTTP_UNAUTHORIZED, 'webhook-signature does not match');
         }
 
         return $next($request);
@@ -36,11 +34,21 @@ class WoocommerceWebhook
 
     public function hasValidSignature(Request $request): bool
     {
-        $signature = $request->header('x-wc-webhook-signature');
-        $payload = $request->all();
+        return Str::is(
+            $this->buildSignature($request),
+            $request->header(self::SIGNATURE_HEADER_KEY)
+        );
+    }
 
-        $hmac = base64_encode(hash_hmac('sha256', $payload, self::KEY_SECRET, true));
-
-        return Str::is($hmac, $signature);
+    public function buildSignature(Request $request)
+    {
+        return base64_encode(
+            hash_hmac(
+                'sha256',
+                $request->getContent(),
+                self::KEY_SECRET,
+                true
+            )
+        );
     }
 }
