@@ -24,7 +24,7 @@ class WoocommerceProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'id'                => 'required|integer',
+            'id'                => 'required|integer|exists:products,woo_product_id',
             'name'              => 'required|string',
             'status'            => 'required|string|same:publish',  // Only allow public products
             'price'             => 'required|numeric',

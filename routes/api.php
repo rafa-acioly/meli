@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\WoocommerceController;
+use App\Http\Controllers\WoocommerceWebhookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,8 +21,12 @@ Route::middleware('auth:sanctum')->get('/user/me', function (Request $request) {
 });
 
 Route::prefix('wc')
+    ->middleware('auth:sanctum')
+    ->group(function() {}); // TODO: Add REST to interact with integrated products
+
+Route::prefix('wc/webhook')
     ->middleware('woocommerce-webhook')
     ->group(function() {
 
-    Route::apiResource('/products', WoocommerceController::class);
-});
+        Route::post('/', WoocommerceWebhookController::class);
+    });
