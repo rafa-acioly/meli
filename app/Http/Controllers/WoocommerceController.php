@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\WoocommerceProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -23,7 +24,7 @@ class WoocommerceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(WoocommerceProductRequest $request)
     {
         //
     }
