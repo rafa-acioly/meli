@@ -19,7 +19,7 @@ class WoocommerceController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Receive a POST request from woocommerce webhooks.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response

@@ -26,7 +26,7 @@ class WoocommerceProductRequest extends FormRequest
         return [
             'id'                => 'required|integer',
             'name'              => 'required|string',
-            'status'            => 'required|string|same:publish',
+            'status'            => 'required|string|same:publish',  // Only allow public products
             'price'             => 'required|numeric',
             'type'              => 'required|string|same:simple',  // Only allow simple products
             'short_description' => 'required|string',
@@ -36,7 +36,7 @@ class WoocommerceProductRequest extends FormRequest
             'images.*.src'      => 'required',
 
             'manage_stock'      => 'required|boolean',
-            'stock_status'      => 'required|string|same:instock',
+            'stock_status'      => 'required|string|same:instock',  // Ony allow products that are in stock
             // Only necessary if the stock is manageable, a product can be sold with 'unlimited stock'
             'stock_quantity'    => 'required|string|required_if:manage_stock',
 
