@@ -48,9 +48,9 @@ class WoocommerceProductRequest extends FormRequest
             'stock_quantity'    => 'required_if:manage_stock,==,true',
 
             'weight' => 'required|string',
-            'dimension.length'  => 'required|string',
-            'dimension.width'   => 'required|string',
-            'dimension.height'  => 'required|string',
+            'dimensions.length'  => 'required|string',
+            'dimensions.width'   => 'required|string',
+            'dimensions.height'  => 'required|string',
 
             'categories'        => 'required|array',
             'categories.*.id'   => 'required|integer',

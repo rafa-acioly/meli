@@ -2,16 +2,16 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\Woocommerce;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Laravel\Sanctum\Sanctum;
 
 class WoocommerceWebhook
 {
-    const KEY_SECRET = 'segredo';
-    const SIGNATURE_HEADER_KEY = 'x-wc-webhook-signature';
-
     /**
      * Handle an incoming request.
      *
@@ -21,7 +21,10 @@ class WoocommerceWebhook
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!$request->hasHeader(self::SIGNATURE_HEADER_KEY)) {
+
+        // TODO: attempt login using the query string key "token"
+
+        if (!$request->hasHeader(Woocommerce::SIGNATURE_HEADER_KEY)) {
             return \response()->json([
                 'error' => 'missing "x-wc-webhook-signature" header'
             ], Response::HTTP_UNAUTHORIZED);
@@ -40,7 +43,7 @@ class WoocommerceWebhook
     {
         return Str::is(
             $this->buildSignature($request),
-            $request->header(self::SIGNATURE_HEADER_KEY)
+            $request->header(Woocommerce::SIGNATURE_HEADER_KEY)
         );
     }
 

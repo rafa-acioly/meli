@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Services\Woocommerce;
+use Illuminate\Http\Response;
 
 use App\Http\Requests\WoocommerceProductRequest;
 
@@ -8,7 +10,7 @@ class WoocommerceWebhookController extends Controller
 {
     protected const EVENT_KEY = 'x-wc-webhook-event';
     protected const EVENT_TYPE_KEY = 'x-wc-webhook-resource';
-    
+
     /**
      * Receive a POST request from woocommerce webhooks.
      *
@@ -17,10 +19,12 @@ class WoocommerceWebhookController extends Controller
      */
     public function store(WoocommerceProductRequest $request)
     {
-        // event name, e.g: updated, created
-        $event = $request->header(self::EVENT_KEY);
+        $event = $request->header(Woocommerce::EVENT_KEY);
+        $eventType = $request->header(Woocommerce::EVENT_TYPE_KEY);
 
-        // event type, e.g: product, order
-        $eventType = $request->header(self::EVENT_TYPE_KEY);
+        return response()->json([
+            'event' => $event,
+            'type' => $eventType
+        ], Response::HTTP_OK);
     }
 }
