@@ -22,11 +22,15 @@ class WoocommerceWebhook
     public function handle(Request $request, Closure $next)
     {
         if (!$request->hasHeader(self::SIGNATURE_HEADER_KEY)) {
-            abort(Response::HTTP_UNAUTHORIZED, 'missing "x-wc-webhook-signature" header');
+            return \response()->json([
+                'error' => 'missing "x-wc-webhook-signature" header'
+            ], Response::HTTP_UNAUTHORIZED);
         }
 
         if (!$this->hasValidSignature($request)) {
-            abort(Response::HTTP_UNAUTHORIZED, 'webhook-signature does not match');
+            return \response()->json([
+                'error' => 'webhook-signature does not match'
+            ], Response::HTTP_UNAUTHORIZED);
         }
 
         return $next($request);

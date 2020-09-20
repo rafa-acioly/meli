@@ -8,7 +8,7 @@ class WoocommerceWebhookController extends Controller
 {
     protected const EVENT_KEY = 'x-wc-webhook-event';
     protected const EVENT_TYPE_KEY = 'x-wc-webhook-resource';
-
+    
     /**
      * Receive a POST request from woocommerce webhooks.
      *

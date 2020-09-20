@@ -16,10 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user/me', function (Request $request) {
-    return $request->user();
-});
-
 Route::prefix('wc')
     ->middleware('auth:sanctum')
     ->group(function() {}); // TODO: Add REST to interact with integrated products
