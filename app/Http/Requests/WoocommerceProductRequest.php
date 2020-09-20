@@ -16,6 +16,13 @@ class WoocommerceProductRequest extends FormRequest
         return true;
     }
 
+    public function messages()
+    {
+        return [
+            'id.exists' => 'the product id was not set for integration yet'
+        ];
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -24,11 +31,11 @@ class WoocommerceProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'id'                => 'required|integer|exists:products,woo_product_id',
+            'id'                => 'required|integer|exists:products,woo_product_sku',
             'name'              => 'required|string',
-            'status'            => 'required|string|same:publish',  // Only allow public products
+            'status'            => 'required|string',  // Only allow public products
             'price'             => 'required|numeric',
-            'type'              => 'required|string|same:simple',  // Only allow simple products
+            'type'              => 'required|string|regex:/simple/',  // Only allow simple products
             'short_description' => 'required|string',
             'description'       => 'required|string',
 
@@ -36,9 +43,9 @@ class WoocommerceProductRequest extends FormRequest
             'images.*.src'      => 'required',
 
             'manage_stock'      => 'required|boolean',
-            'stock_status'      => 'required|string|same:instock',  // Ony allow products that are in stock
+            'stock_status'      => 'required|string|regex:/instock/',  // Ony allow products that are in stock
             // Only necessary if the stock is manageable, a product can be sold with 'unlimited stock'
-            'stock_quantity'    => 'required|string|required_if:manage_stock',
+            'stock_quantity'    => 'required_if:manage_stock,==,true',
 
             'weight' => 'required|string',
             'dimension.length'  => 'required|string',

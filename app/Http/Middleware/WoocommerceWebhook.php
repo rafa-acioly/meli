@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class WoocommerceWebhook
 {
-    const KEY_SECRET = 'secret';
+    const KEY_SECRET = 'segredo';
     const SIGNATURE_HEADER_KEY = 'x-wc-webhook-signature';
 
     /**
