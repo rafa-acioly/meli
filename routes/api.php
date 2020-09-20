@@ -28,5 +28,5 @@ Route::prefix('wc/webhook')
     ->middleware('woocommerce-webhook')
     ->group(function() {
 
-        Route::post('/', WoocommerceWebhookController::class);
+        Route::apiResource('/', WoocommerceWebhookController::class);
     });
