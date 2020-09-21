@@ -1,13 +1,13 @@
 <?php
 
 
-namespace App\Services;
+namespace App\Resources;
 
 
 use App\Models\Credential;
-use App\Services\Connectors\BigCommerceConnector;
-use App\Services\Connectors\Service;
-use App\Services\Connectors\ServiceConnector;
+use App\Resources\Connectors\BigCommerceConnector;
+use App\Resources\Connectors\Service;
+use App\Resources\Connectors\ServiceConnector;
 
 class BigCommerce extends Service
 {

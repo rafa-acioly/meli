@@ -1,11 +1,11 @@
 <?php
 
 
-namespace App\Services;
+namespace App\Resources;
 
 
 use App\Models\Credential;
-use App\Services\Connectors\Service;
+use App\Resources\Connectors\Service;
 
 class ServiceFactory
 {

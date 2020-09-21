@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Services\Connectors;
+namespace App\Resources\Connectors;
 
 
 abstract class Service

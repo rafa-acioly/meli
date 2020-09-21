@@ -1,13 +1,13 @@
 <?php
 
 
-namespace App\Services;
+namespace App\Resources;
 
 
 use App\Models\Credential;
-use App\Services\Connectors\LojaIntegradaConnector;
-use App\Services\Connectors\Service;
-use App\Services\Connectors\ServiceConnector;
+use App\Resources\Connectors\LojaIntegradaConnector;
+use App\Resources\Connectors\Service;
+use App\Resources\Connectors\ServiceConnector;
 
 class LojaIntegrada extends Service
 {

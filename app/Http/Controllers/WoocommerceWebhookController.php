@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Services\Woocommerce;
+use App\Resources\Woocommerce;
 use Illuminate\Http\Response;
 
 use App\Http\Requests\WoocommerceProductRequest;

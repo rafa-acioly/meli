@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Services\Connectors;
+namespace App\Resources\Connectors;
 
 
 use App\Models\Credential;

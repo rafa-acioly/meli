@@ -1,12 +1,12 @@
 <?php
 
 
-namespace App\Services\Connectors;
+namespace App\Resources\Connectors;
 
 
 use App\Models\Credential;
 
-class MagentoConnector implements ServiceConnector
+class WoocommerceConnector implements ServiceConnector
 {
     private $credential;
 
