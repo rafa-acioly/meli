@@ -13,9 +13,6 @@ use Laravel\Sanctum\Sanctum;
 
 class WoocommerceWebhook
 {
-
-    protected const KEY_SECRET = 'secret';
-
     /**
      * Handle an incoming request.
      *
@@ -83,7 +80,7 @@ class WoocommerceWebhook
             hash_hmac(
                 'sha256',
                 $request->getContent(),
-                self::KEY_SECRET,
+                env('WEBHOOK_KEY_SECRET'),
                 true
             )
         );
