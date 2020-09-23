@@ -9,9 +9,10 @@
     "license": "MIT",
     "require": {
         "php": "^7.4",
+        "dsc/mercado-livre": "dev-master",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.0.1",
+        "guzzlehttp/guzzle": "^7.1",
         "laravel/framework": "^8.0",
         "laravel/jetstream": "^1.2",
         "laravel/sanctum": "^2.6",
@@ -61,5 +62,8 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ]
-    }
+    },
+    "repositories": [
+        { "type": "git", "url": "https://github.com/rafa-acioly/dsc-mercado-livre" }
+    ]
 }

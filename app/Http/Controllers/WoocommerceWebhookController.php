@@ -5,8 +5,11 @@ use App\Entities\WoocommerceProduct;
 use App\Resources\Woocommerce;
 
 use App\Http\Requests\WoocommerceProductRequest;
+use Dsc\MercadoLivre\Announcement;
+use Dsc\MercadoLivre\Resources\Authorization\AuthorizationService;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Dsc\MercadoLivre\Meli;
 
 class WoocommerceWebhookController extends Controller
 {
@@ -25,9 +28,9 @@ class WoocommerceWebhookController extends Controller
         $eventType = $request->header(Woocommerce::EVENT_TYPE_KEY);
 
         $product = new WoocommerceProduct($request->all());
-        $meli = new Meli('APP-ID', 'SECRET-ID');
-        $auth = new AuthorizationService($meli);
-        $announcement = new Announcement($auth);
+        $meli = new Meli(env('MELI_ID'), env('MELI_SECRET'));
+
+        $announcement = new Announcement($meli);
 
         $productData = [
             'title' => $product->getTitle(),
