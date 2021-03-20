@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 class MeliAuthorizationServiceAdapter extends AuthorizationService
 {
 
-    public function getOAuthUrl($redirectUri)
+    public function getOAuthUrl($redirectUri): string
     {
         $meli = $this->getMeli();
         $environment = $meli->getEnvironment();

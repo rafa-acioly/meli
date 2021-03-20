@@ -9,10 +9,14 @@ services:
     environment:
       MYSQL_DATABASE: meli
       MYSQL_ROOT_PASSWORD: root
+    networks:
+      - app-network
 
   cache:
     image: redis:6.2-alpine
     restart: always
+    networks:
+      - app-network
 
   myadmin:
     image: phpmyadmin/phpmyadmin
@@ -21,3 +25,9 @@ services:
     restart: always
     depends_on:
       - database
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
