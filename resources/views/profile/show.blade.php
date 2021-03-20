@@ -37,6 +37,12 @@
                 @livewire('mercadolivre-integration-form')
             </div>
 
+            <x-jet-section-border/>
+
+            <div class="mt-10 sm:mt-0">
+                @livewire('woocommerce-integration-form')
+            </div>
+
             <x-jet-section-border />
 
             <div class="mt-10 sm:mt-0">

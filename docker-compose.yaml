@@ -14,14 +14,16 @@ services:
 
   cache:
     image: redis:6.2-alpine
-    restart: always
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
     networks:
       - app-network
 
   myadmin:
     image: phpmyadmin/phpmyadmin
     ports:
-      - "80:80"
+      - "80:8090"
     restart: always
     depends_on:
       - database
@@ -30,4 +32,4 @@ services:
 
 networks:
   app-network:
-    driver: bridge
+    driver: "bridge"

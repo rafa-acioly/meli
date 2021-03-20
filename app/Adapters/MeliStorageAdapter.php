@@ -5,28 +5,27 @@ namespace App\Adapters;
 use Dsc\MercadoLivre\Storage\StorageInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Redis;
 
 class MeliStorageAdapter implements StorageInterface
 {
     public function set($name, $value): bool
     {
-        return Redis::set($this->getStorageKey($name), $value);
+        return Cache::add($this->getStorageKey($name), $value);
     }
 
     public function has($name): bool
     {
-        return Redis::get($this->getStorageKey($name));
+        return Cache::has($this->getStorageKey($name));
     }
 
     public function get($name)
     {
-        return Redis::get($this->getStorageKey($name));
+        return Cache::get($this->getStorageKey($name));
     }
 
     public function remove($name): bool
     {
-        return Redis::delete($this->getStorageKey($name));
+        return Cache::forget($this->getStorageKey($name));
     }
 
     private function getStorageKey($name): string

@@ -31,9 +31,6 @@ class MercadolivreIntegrationForm extends Component
 
     public function render()
     {
-
-        dd(app()->make('redis'));
-
         if ($this->code && ($this->state == Auth::id())) {
             $this->service->authorize($this->code, env('MELI_CALLBACK'));
         }
