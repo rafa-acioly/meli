@@ -9,7 +9,7 @@ class Credential extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['service_name', 'consumer_key', 'consumer_secret'];
+    protected $fillable = ['store_url', 'consumer_key', 'consumer_secret'];
 
     public function user()
     {
