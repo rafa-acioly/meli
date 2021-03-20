@@ -1,13 +1,18 @@
 <?php
 
+use App\Adapters\MeliAdapter;
+use App\Adapters\MeliAuthorizationServiceAdapter;
+use App\Adapters\MeliEnvironmentAdapter;
 use App\Http\Controllers\WoocommerceWebhookController;
 use Dsc\MercadoLivre\Announcement;
 use Dsc\MercadoLivre\Announcement\Item;
 use Dsc\MercadoLivre\Announcement\Picture;
+use Dsc\MercadoLivre\Environments\Test;
 use Dsc\MercadoLivre\Meli;
 use Dsc\MercadoLivre\Requests\Product\ProductService;
 use Dsc\MercadoLivre\Resources\Authorization\AuthorizationService;
 use Dsc\MercadoLivre\Resources\User\UserService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,19 +37,36 @@ Route::prefix('wc/webhook')
         Route::apiResource('/', WoocommerceWebhookController::class);
     });
 
-Route::get('/meli/get', function() {
+Route::get('/meli/get_access_token', function() {
     $meli = new Meli(
         env('MELI_ID'),
         env('MELI_SECRET')
     );
     $service = new AuthorizationService($meli);
 
-    if(isset($_GET['code'])) {
-        $service->authorize($_GET['code'], env('MELI_CALLBACK'));
-        return redirect('/api/meli');
+    echo $service->getAccessToken();
+
+//    if(isset($_GET['code'])) {
+//        $service->authorize($_GET['code'], env('MELI_CALLBACK'));
+//        return redirect('/api/meli');
+//    }
+//
+//    echo '<br><br><a href="' . $service->getOAuthUrl(env('MELI_CALLBACK')) . '">Login using MercadoLibre oAuth 2.0</a>';
+});
+
+Route::get('/meli/authorize_access', function () {
+    $meli = new Meli(
+        env('MELI_ID'),
+        env('MELI_SECRET'),
+        new MeliEnvironmentAdapter()
+    );
+    $service = new MeliAuthorizationServiceAdapter($meli);
+
+    if(isset($_GET["code"]) && isset($_GET["state"])) {
+        return $service->authorize($_GET['code'], env('MELI_CALLBACK'));
     }
 
-    echo '<br><br><a href="' . $service->getOAuthUrl(env('MELI_CALLBACK')) . '">Login using MercadoLibre oAuth 2.0</a>';
+    echo '<a href="' . $service->getOAuthUrl(env('MELI_CALLBACK')) . '">Login using MercadoLibre oAuth 2.0</a>';
 });
 
 Route::get('/meli/user', function() {

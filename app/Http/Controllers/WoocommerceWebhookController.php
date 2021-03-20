@@ -32,12 +32,6 @@ class WoocommerceWebhookController extends Controller
 
         $announcement = new Announcement($meli);
 
-        $productData = [
-            'title' => $product->getTitle(),
-            'available_quantity' => $product->getAvailableQuantity(),
-            'price' => $product->getPrice(),
-        ];
-
         $integratedProduct = Auth::user()->products()->where('woo_product_id', $product->id);
         $response = $announcement->update($integratedProduct->meli_product_id, $productData);
 

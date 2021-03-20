@@ -6,10 +6,8 @@ use App\Resources\Woocommerce;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\PersonalAccessToken;
-use Laravel\Sanctum\Sanctum;
 
 class WoocommerceWebhook
 {
