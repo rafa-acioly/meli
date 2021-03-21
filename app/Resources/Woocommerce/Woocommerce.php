@@ -13,6 +13,7 @@ use App\Resources\Woocommerce\Api\Customer;
 use App\Resources\Woocommerce\Api\Order;
 use App\Resources\Woocommerce\Api\Product;
 use App\Resources\Woocommerce\Api\System;
+use App\Resources\Woocommerce\Api\Webhook;
 use Automattic\WooCommerce\Client;
 
 class Woocommerce
@@ -56,6 +57,11 @@ class Woocommerce
     public function system(): System
     {
         return new System($this->client);
+    }
+
+    public function webhook(): Webhook
+    {
+        return new Webhook($this->client);
     }
 
     public static function authorization(string $storeURL): void

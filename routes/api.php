@@ -3,15 +3,19 @@
 use App\Adapters\MeliAdapter;
 use App\Adapters\MeliAuthorizationServiceAdapter;
 use App\Adapters\MeliEnvironmentAdapter;
+use App\Http\Controllers\WoocommerceCredential;
+use App\Http\Controllers\WoocommerceOrderController;
+use App\Http\Controllers\WoocommerceProductController;
+use App\Jobs\WoocommerceOrderWebhook;
+use App\Jobs\WoocommerceProductWebhook;
+use App\Models\User;
 use Dsc\MercadoLivre\Announcement;
 use Dsc\MercadoLivre\Announcement\Item;
 use Dsc\MercadoLivre\Announcement\Picture;
-use Dsc\MercadoLivre\Environments\Test;
 use Dsc\MercadoLivre\Meli;
 use Dsc\MercadoLivre\Requests\Product\ProductService;
 use Dsc\MercadoLivre\Resources\Authorization\AuthorizationService;
 use Dsc\MercadoLivre\Resources\User\UserService;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -118,6 +122,16 @@ Route::get('/meli', function () {
 });
 
 
-Route::post('/woocommerce/credential', function ($request) {
-    dd($request);
-})->name('woocommerce.credential');
+Route::group(['prefix' => 'woocommerce'], function() {
+
+    /**
+     * Route to save clients tokens and create webhooks.
+     */
+    Route::post('/credential', [WoocommerceCredential::class, 'store'])->name('woocommerce.credential');
+
+    /**
+     * Routes to receive updates from woocommerce webhooks
+     */
+    Route::post('/products', [WoocommerceProductController::class, 'update'])->name('woocommerce.webhook.product');
+    Route::post('/orders', [WoocommerceOrderController::class, 'update'])->name('woocommerce.webhook.order');
+});
