@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Credential extends Model
 {
@@ -11,7 +12,7 @@ class Credential extends Model
 
     protected $fillable = ['store_url', 'consumer_key', 'consumer_secret'];
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

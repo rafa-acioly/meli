@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Credential;
+use App\Resources\Woocommerce\Woocommerce;
 use Livewire\Component;
 
 class WoocommerceIntegrationForm extends Component
