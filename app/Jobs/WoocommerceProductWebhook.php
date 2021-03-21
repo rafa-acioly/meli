@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Credential;
+use App\Resources\Woocommerce\Enum\WebhookType;
 use App\Resources\Woocommerce\Woocommerce;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -42,7 +43,7 @@ class WoocommerceProductWebhook implements ShouldQueue
      */
     public function handle()
     {
-        $this->client->webhook()->create('product.updated');
+        $this->client->webhook()->create(WebhookType::Product);
     }
 
     /**

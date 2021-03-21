@@ -1,10 +1,9 @@
 <?php
 
-
 namespace App\Resources\Woocommerce\Api;
 
-
 use App\Resources\Woocommerce\Entity\AbstractEntity;
+
 
 class Webhook extends AbstractEntity
 {

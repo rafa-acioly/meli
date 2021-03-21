@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Credential;
+use App\Resources\Woocommerce\Enum\WebhookType;
 use App\Resources\Woocommerce\Woocommerce;
 use Carbon\Carbon;
 use DateTime;
@@ -43,7 +44,7 @@ class WoocommerceOrderWebhook implements ShouldQueue
      */
     public function handle()
     {
-        $this->client->webhook()->create('order.updated');
+        $this->client->webhook()->create(WebhookType::Order);
     }
 
     /**
