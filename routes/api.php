@@ -3,7 +3,6 @@
 use App\Adapters\MeliAdapter;
 use App\Adapters\MeliAuthorizationServiceAdapter;
 use App\Adapters\MeliEnvironmentAdapter;
-use App\Http\Controllers\WoocommerceWebhookController;
 use Dsc\MercadoLivre\Announcement;
 use Dsc\MercadoLivre\Announcement\Item;
 use Dsc\MercadoLivre\Announcement\Picture;
@@ -30,12 +29,12 @@ Route::prefix('wc')
     ->middleware('auth:sanctum')
     ->group(function() {}); // TODO: Add REST to interact with integrated products
 
-Route::prefix('wc/webhook')
-    ->middleware(['woocommerce-webhook', 'auth:sanctum'])
-    ->group(function() {
-
-        Route::apiResource('/', WoocommerceWebhookController::class);
-    });
+//Route::prefix('wc/webhook')
+//    ->middleware(['woocommerce-webhook', 'auth:sanctum'])
+//    ->group(function() {
+//
+//        Route::apiResource('/', WoocommerceWebhookController::class);
+//    });
 
 Route::get('/meli/get_access_token', function() {
     $meli = new Meli(
@@ -117,3 +116,8 @@ Route::get('/meli', function () {
 
     dd($response);
 });
+
+
+Route::post('/woocommerce/credential', function ($request) {
+    dd($request);
+})->name('woocommerce.credential');

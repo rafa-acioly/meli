@@ -8,6 +8,7 @@ use App\Models\Credential;
 use App\Resources\Connectors\Service;
 use App\Resources\Connectors\ServiceConnector;
 use App\Resources\Connectors\WoocommerceConnector;
+use App\Resources\Woocommerce\Api\Authorization;
 use App\Resources\Woocommerce\Api\Customer;
 use App\Resources\Woocommerce\Api\Order;
 use App\Resources\Woocommerce\Api\Product;
@@ -33,7 +34,12 @@ class Woocommerce
         $this->client = new Client(
             $credential->store_url,
             $credential->consumer_key,
-            $credential->consumer_secret
+            $credential->consumer_secret,
+            [
+                'wp_api' => true,
+                'version' => 'wc/v3',
+                'verify_ssl' => false,
+            ]
         );
     }
 
@@ -50,5 +56,10 @@ class Woocommerce
     public function system(): System
     {
         return new System($this->client);
+    }
+
+    public static function authorization(string $storeURL): void
+    {
+        Authorization::redirectToPermission($storeURL);
     }
 }

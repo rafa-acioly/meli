@@ -6,7 +6,7 @@ namespace App\Resources\Woocommerce\Api;
 
 class System extends AbstractApi
 {
-    const ENDPOINT = "system_status";
+    const ENDPOINT = 'system_status';
 
     public function ping(): bool
     {
