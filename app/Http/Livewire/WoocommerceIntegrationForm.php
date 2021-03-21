@@ -33,11 +33,14 @@ class WoocommerceIntegrationForm extends Component
     public function save()
     {
         $this->validate();
-        auth()->user()->credential()->createOrUpdate([
+        $args = [
             'store_url' => $this->store_url,
             'consumer_key' => $this->consumer_key,
             'consumer_secret' => $this->consumer_secret
-        ]);
-        $this->emit('saved');
+        ];
+        $credential = auth()->user()->credential;
+        $actionResult = $credential->exists ? $credential->update($args) : $credential->create($args);
+
+        $actionResult ? $this->emit('saved') : $this->emit('error');
     }
 }

@@ -29,7 +29,11 @@
 
     <x-slot name="actions">
         <x-jet-action-message class="mr-3" on="saved">
-            {{ __('Saved.') }}
+            {{ __('Salvo com sucesso.') }}
+        </x-jet-action-message>
+
+        <x-jet-action-message class="mr-3" on="error">
+            {{ __('Dados inválidos.') }}
         </x-jet-action-message>
 
         <x-jet-button>
