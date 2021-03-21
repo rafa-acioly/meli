@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Adapters\MeliStorageAdapter;
+use Dsc\MercadoLivre\AccessToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,8 +17,13 @@ class ProductsController extends Controller
     public function index()
     {
         $products = Auth::user()->products();
+        $wooCredential = Auth::user()->credential;
+        $meliCredential = (new MeliStorageAdapter())->has(AccessToken::TOKEN);
 
-        return view('products.index', compact('products'));
+        return view('products.index', [
+            'products' => $products,
+            'is_integrated' => ($wooCredential != null) && $wooCredential->isEnabled() && $meliCredential
+        ]);
     }
 
     /**

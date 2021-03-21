@@ -16,4 +16,9 @@ class Credential extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function isEnabled(): bool
+    {
+        return $this->consumer_key != null && $this->consumer_secret != null;
+    }
 }
