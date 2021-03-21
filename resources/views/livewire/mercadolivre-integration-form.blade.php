@@ -4,17 +4,22 @@
     </x-slot>
 
     <x-slot name="description">
-        {{ __('Enable mercado livres\'s integration.') }}
+        {{ __('Habilitar integração com Mercado livre.') }}
     </x-slot>
 
     <x-slot name="content">
         <h3 class="text-lg font-medium text-gray-900">
-            {{ __('You have not enabled mercado livres integration') }}
+            @if(!$enabled)
+                Você <strong>ainda não habilitou</strong> a integração.
+            @else
+                Você <strong>já habilitou</strong> a integração.
+            @endif
         </h3>
 
         <div class="mt-3 max-w-xl text-sm text-gray-600">
             <p>
-                {{ __('lorem') }}
+                Esta opção habilita a integração com o mercado livre para que possamos
+                sincronizar seus produtos e pedidos.
             </p>
         </div>
 

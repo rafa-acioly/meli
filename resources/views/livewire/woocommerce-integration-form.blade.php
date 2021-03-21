@@ -4,7 +4,7 @@
     </x-slot>
 
     <x-slot name="description">
-        {{ __('Enable woocommerce integration.') }}
+        Habilitar integração com Woocommerce.
     </x-slot>
 
     <x-slot name="form">
