@@ -1,4 +1,4 @@
-<x-jet-action-section>
+<x-jet-form-section submit="save">
     <x-slot name="title">
         {{ __('Woocommerce') }}
     </x-slot>
@@ -7,21 +7,33 @@
         {{ __('Enable woocommerce integration.') }}
     </x-slot>
 
-    <x-slot name="content">
-        <h3 class="text-lg font-medium text-gray-900">
-            {{ __('You have not enabled woocommerce integration') }}
-        </h3>
-
-        <div class="mt-3 max-w-xl text-sm text-gray-600">
-            <p>
-                {{ __('lorem') }}
-            </p>
+    <x-slot name="form">
+        <div class="col-span-6 sm:col-span-4">
+            <x-jet-label for="store_url" value="{{ __('Link da loja') }}" />
+            <x-jet-input id="store_url" type="text" class="mt-1 block w-full" wire:model="store_url" required />
+            <x-jet-input-error for="store_url" class="mt-2" />
         </div>
 
-        <div class="mt-5">
-            <a href="{{ $url }}" class="inline-flex items-center px-4 py-2 bg-purple-900 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-purple-700 active:bg-purple-900 focus:outline-none focus:border-purple-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
-                {{ __('Habilitar') }}
-            </a>
+        <div class="col-span-6 sm:col-span-4">
+            <x-jet-label for="access_token" value="{{ __('Consumer key') }}" />
+            <x-jet-input id="consumer_key" type="text" class="mt-1 block w-full" wire:model="consumer_key" required />
+            <x-jet-input-error for="consumer_key" class="mt-2" />
+        </div>
+
+        <div class="col-span-6 sm:col-span-4">
+            <x-jet-label for="consumer_secret" value="{{ __('Consumer secret') }}" />
+            <x-jet-input id="consumer_secret" type="text" class="mt-1 block w-full" wire:model="consumer_secret" required />
+            <x-jet-input-error for="consumer_secret" class="mt-2" />
         </div>
     </x-slot>
-</x-jet-action-section>
+
+    <x-slot name="actions">
+        <x-jet-action-message class="mr-3" on="saved">
+            {{ __('Saved.') }}
+        </x-jet-action-message>
+
+        <x-jet-button>
+            {{ __('Salvar') }}
+        </x-jet-button>
+    </x-slot>
+</x-jet-form-section>

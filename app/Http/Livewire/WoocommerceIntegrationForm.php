@@ -2,25 +2,42 @@
 
 namespace App\Http\Livewire;
 
-use Illuminate\Support\Facades\Auth;
+use App\Models\Credential;
 use Livewire\Component;
 
 class WoocommerceIntegrationForm extends Component
 {
-    public string $url;
+    public ?string $store_url = null;
+    public ?string $consumer_key = null;
+    public ?string $consumer_secret = null;
+
+    protected array $rules = [
+        'store_url' => 'required|active_url',
+        'consumer_key' => 'required|string',
+        'consumer_secret' => 'required|string'
+    ];
 
     public function render()
     {
-        $storeURL = "http://aciolycom.test/wc-auth/v1/authorize";
-        $params = [
-            'app_name'     => env('APP_NAME'),
-            'scope'        => 'read|write',
-            'user_id'      => Auth::id(),
-            'return_url'   => 'https://app.com',
-            'callback_url' => 'https://app.com'
-        ];
-        $this->url = $storeURL . '?' . http_build_query($params);
-
         return view('livewire.woocommerce-integration-form');
+    }
+
+    public function mount()
+    {
+        $credential = auth()->user()->credential;
+        $this->consumer_secret = $credential->consumer_secret;
+        $this->consumer_key = $credential->consumer_key;
+        $this->store_url = $credential->store_url;
+    }
+
+    public function save()
+    {
+        $this->validate();
+        auth()->user()->credential()->createOrUpdate([
+            'store_url' => $this->store_url,
+            'consumer_key' => $this->consumer_key,
+            'consumer_secret' => $this->consumer_secret
+        ]);
+        $this->emit('saved');
     }
 }
