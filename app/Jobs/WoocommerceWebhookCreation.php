@@ -9,11 +9,12 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
 
-class WoocommerceOrderWebhook implements ShouldQueue
+class WoocommerceWebhookCreation implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    private Woocommerce $client;
 
     /**
      * The number of times the job may be attempted.
@@ -22,8 +23,6 @@ class WoocommerceOrderWebhook implements ShouldQueue
      */
     public int $tries = 3;
 
-    private Woocommerce $client;
-
     /**
      * Create a new job instance.
      *
@@ -31,6 +30,7 @@ class WoocommerceOrderWebhook implements ShouldQueue
      */
     public function __construct(Woocommerce $client)
     {
+
         $this->client = $client;
     }
 
@@ -41,6 +41,6 @@ class WoocommerceOrderWebhook implements ShouldQueue
      */
     public function handle()
     {
-        $this->client->webhook()->createOrder();
+        $this->client->webhook()->batch();
     }
 }

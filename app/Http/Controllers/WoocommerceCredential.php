@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\WoocommerceOrderWebhook;
-use App\Jobs\WoocommerceProductWebhook;
+use App\Jobs\WoocommerceWebhookCreation;
 use App\Models\User;
 use App\Resources\Woocommerce\Woocommerce;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class WoocommerceCredential extends Controller
 {
@@ -45,10 +43,9 @@ class WoocommerceCredential extends Controller
 
         $wooClient = new Woocommerce($user->credential);
 
-        WoocommerceProductWebhook::dispatch($wooClient);
-        WoocommerceOrderWebhook::dispatch($wooClient);
+        WoocommerceWebhookCreation::dispatch($wooClient);
 
-        return response();
+        return response(null);
     }
 
     /**

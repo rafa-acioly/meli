@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Resources\Woocommerce;
+use App\Resources\Woocommerce\Woocommerce;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

@@ -36,8 +36,27 @@ class Webhook extends AbstractApi
     public function find(int $id): WebhookEntity
     {
         $webhook = $this->client->get(sprintf('%s/%d', self::ENDPOINT, $id));
-        $webhook = json_decode($webhook);
 
         return new WebhookEntity($webhook);
+    }
+
+    public function batch()
+    {
+        $data = [
+            'create' => [
+                [
+                    'name'          => sprintf('%s - order', env('APP_NAME')),
+                    'topic'         => 'order.updated',
+                    'delivery_url'  => route('woocommerce.webhook.order')
+                ],
+                [
+                    'name'          => sprintf('%s - product', env('APP_NAME')),
+                    'topic'         => 'product.updated',
+                    'delivery_url'  => route('woocommerce.webhook.product')
+                ]
+            ]
+        ];
+
+        $this->client->post(self::ENDPOINT . '/batch', $data);
     }
 }
