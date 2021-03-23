@@ -5,7 +5,7 @@ use App\Adapters\MeliAuthorizationServiceAdapter;
 use App\Adapters\MeliEnvironmentAdapter;
 use App\Http\Controllers\WoocommerceCredential;
 use App\Http\Controllers\WoocommerceOrderController;
-use App\Http\Controllers\WooToMeliProductSyncController;
+use App\Http\Controllers\WooToMeliProductController;
 use App\Jobs\WoocommerceOrderWebhook;
 use App\Jobs\WoocommerceProductWebhook;
 use App\Models\User;
@@ -132,6 +132,6 @@ Route::group(['prefix' => 'woocommerce'], function() {
     /**
      * Routes to receive updates from woocommerce webhooks
      */
-    Route::post('/products', [WooToMeliProductSyncController::class, 'update'])->name('woocommerce.webhook.product');
+    Route::post('/products', [WooToMeliProductController::class, 'update'])->name('woocommerce.webhook.product');
     Route::post('/orders', [WoocommerceOrderController::class, 'update'])->name('woocommerce.webhook.order');
 });
