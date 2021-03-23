@@ -2,9 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Models\Credential;
-use App\Resources\Woocommerce\Enum\WebhookType;
 use App\Resources\Woocommerce\Woocommerce;
+use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,6 +11,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class WoocommerceProductWebhook implements ShouldQueue
 {
@@ -24,7 +25,7 @@ class WoocommerceProductWebhook implements ShouldQueue
      *
      * @var int
      */
-    public int $tries = 5;
+    public int $tries = 3;
 
     /**
      * Create a new job instance.
@@ -43,16 +44,6 @@ class WoocommerceProductWebhook implements ShouldQueue
      */
     public function handle()
     {
-        $this->client->webhook()->create(WebhookType::Product);
-    }
-
-    /**
-     * Determine the time at which the job should timeout.
-     *
-     * @return Carbon
-     */
-    public function retryUntil(): Carbon
-    {
-        return now()->addMinutes(2);
+        $this->client->webhook()->createProduct();
     }
 }

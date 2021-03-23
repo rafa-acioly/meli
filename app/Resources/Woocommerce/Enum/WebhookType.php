@@ -3,7 +3,7 @@
 namespace App\Resources\Woocommerce\Enum;
 
 
-class WebhookType extends \SplEnum
+class WebhookType
 {
     const Product   = 'product.updated';
     const Order     = 'order.updated';

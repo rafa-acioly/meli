@@ -2,17 +2,14 @@
 
 namespace App\Jobs;
 
-use App\Models\Credential;
-use App\Resources\Woocommerce\Enum\WebhookType;
 use App\Resources\Woocommerce\Woocommerce;
-use Carbon\Carbon;
-use DateTime;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class WoocommerceOrderWebhook implements ShouldQueue
 {
@@ -23,7 +20,7 @@ class WoocommerceOrderWebhook implements ShouldQueue
      *
      * @var int
      */
-    public int $tries = 5;
+    public int $tries = 3;
 
     private Woocommerce $client;
 
@@ -44,16 +41,6 @@ class WoocommerceOrderWebhook implements ShouldQueue
      */
     public function handle()
     {
-        $this->client->webhook()->create(WebhookType::Order);
-    }
-
-    /**
-     * Determine the time at which the job should timeout.
-     *
-     * @return Carbon
-     */
-    public function retryUntil(): Carbon
-    {
-        return now()->addMinutes(2);
+        $this->client->webhook()->createOrder();
     }
 }

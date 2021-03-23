@@ -1,11 +1,7 @@
 <x-jet-form-section submit="save">
-    <x-slot name="title">
-        {{ __('Woocommerce') }}
-    </x-slot>
+    <x-slot name="title">{{ __('Woocommerce') }}</x-slot>
 
-    <x-slot name="description">
-        Habilitar integração com Woocommerce.
-    </x-slot>
+    <x-slot name="description">Habilitar integração com Woocommerce.</x-slot>
 
     <x-slot name="form">
         <div class="col-span-6 sm:col-span-4">

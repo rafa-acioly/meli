@@ -28,7 +28,7 @@ class MercadolivreIntegrationForm extends Component
     {
         $this->meli = new Meli(env('MELI_ID'), env('MELI_SECRET'), new MeliEnvironmentAdapter());
         $this->service = new MeliAuthorizationServiceAdapter($this->meli);
-        $this->enabled = (new MeliStorageAdapter())->get(AccessToken::TOKEN);
+        $this->enabled = (bool)(new MeliStorageAdapter())->get(AccessToken::TOKEN);
 
         parent::__construct($id);
     }

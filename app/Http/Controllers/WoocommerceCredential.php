@@ -7,6 +7,7 @@ use App\Jobs\WoocommerceProductWebhook;
 use App\Models\User;
 use App\Resources\Woocommerce\Woocommerce;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class WoocommerceCredential extends Controller
 {
@@ -44,10 +45,10 @@ class WoocommerceCredential extends Controller
 
         $wooClient = new Woocommerce($user->credential);
 
-        WoocommerceProductWebhook::dispatch($wooClient)->onQueue('woo_product_webhook_creation');
-        WoocommerceOrderWebhook::dispatch($wooClient)->onQueue('woo_order_webhook_creation');
+        WoocommerceProductWebhook::dispatch($wooClient);
+        WoocommerceOrderWebhook::dispatch($wooClient);
 
-        return response(null);
+        return response();
     }
 
     /**
