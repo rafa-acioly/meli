@@ -14,7 +14,7 @@ use Illuminate\Queue\Middleware\ThrottlesExceptionsWithRedis;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
-class WooToMeliSync implements ShouldQueue
+class WooToMeliProductSync implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -33,6 +33,7 @@ class WooToMeliSync implements ShouldQueue
     public int $tries = 3;
 
     private Meli $client;
+
     private WoocommerceProductRequest $request;
 
     /**

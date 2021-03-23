@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Adapters\MeliEnvironmentAdapter;
 use App\Http\Requests\WoocommerceProductRequest;
-use App\Jobs\WooToMeliSync;
+use App\Jobs\WooToMeliProductSync;
 use Dsc\MercadoLivre\Meli;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -40,16 +40,15 @@ class WooToMeliProductSyncController extends Controller
     public function store(WoocommerceProductRequest $request)
     {
         /**
-         * TODO: Definir como sera efetuado o rececimento da requisicao (o usuario precisa ser autenticado)
+         * TODO: Definir como sera efetuado o recebimento da requisicao (o usuario precisa ser autenticado)
          */
-
         $meli = new Meli(
             env('MELI_ID'),
             env('MELI_SECRET'),
             new MeliEnvironmentAdapter(Auth::id())
         );
 
-        WooToMeliSync::dispatch($meli, $request)->delay(now()->addMinutes(5));
+        WooToMeliProductSync::dispatch($meli, $request)->delay(now()->addMinutes(5));
 
         return response(null);
     }
