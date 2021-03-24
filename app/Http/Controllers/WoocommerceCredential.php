@@ -6,6 +6,8 @@ use App\Jobs\WoocommerceWebhookCreation;
 use App\Models\User;
 use App\Resources\Woocommerce\Woocommerce;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class WoocommerceCredential extends Controller
 {
@@ -18,9 +20,10 @@ class WoocommerceCredential extends Controller
     public function store(Request $request)
     {
         $keys = $request->only(['consumer_key', 'consumer_secret']);
-        $user = User::findOrFail($request->input('user_id'));
+        $user = User::findOrFail(Crypt::decrypt($request->input('user_id')));
         $user->credential()->update($keys);
 
+        Auth::login($user);
         $wooClient = new Woocommerce($user->credential);
 
         WoocommerceWebhookCreation::dispatch($wooClient);

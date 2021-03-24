@@ -4,7 +4,11 @@ namespace App\Resources\Woocommerce\Api;
 
 use App\Resources\Woocommerce\Entity\Webhook as WebhookEntity;
 use App\Resources\Woocommerce\Enum\WebhookType;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Laravel\Sanctum\PersonalAccessToken;
 
 
 class Webhook extends AbstractApi
@@ -42,17 +46,18 @@ class Webhook extends AbstractApi
 
     public function batch()
     {
+        $userIDEncrypted = ['usr' => Crypt::encrypt(Auth::id())];
         $data = [
             'create' => [
                 [
                     'name'          => sprintf('%s - order', env('APP_NAME')),
                     'topic'         => 'order.updated',
-                    'delivery_url'  => route('woocommerce.webhook.order')
+                    'delivery_url'  => route('woocommerce.webhook.order', $userIDEncrypted)
                 ],
                 [
                     'name'          => sprintf('%s - product', env('APP_NAME')),
                     'topic'         => 'product.updated',
-                    'delivery_url'  => route('woocommerce.webhook.product')
+                    'delivery_url'  => route('woocommerce.webhook.product', $userIDEncrypted)
                 ]
             ]
         ];
