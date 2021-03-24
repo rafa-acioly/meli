@@ -4,7 +4,6 @@
 namespace App\Adapters;
 
 
-use Dsc\MercadoLivre\Environment;
 use Dsc\MercadoLivre\Meli;
 use Illuminate\Support\Facades\Auth;
 

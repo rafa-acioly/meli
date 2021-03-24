@@ -10,10 +10,6 @@ class MeliStorageAdapter implements StorageInterface
 {
     public int $userID;
 
-    /**
-     * MeliStorageAdapter constructor.
-     * @param int $userID
-     */
     public function __construct(int $userID)
     {
         $this->userID = $userID;

@@ -4,10 +4,8 @@ namespace App\Http\Livewire;
 
 use App\Adapters\MeliAdapter;
 use App\Adapters\MeliAuthorizationServiceAdapter;
-use App\Adapters\MeliEnvironmentAdapter;
 use App\Adapters\MeliStorageAdapter;
 use Dsc\MercadoLivre\AccessToken;
-use Dsc\MercadoLivre\Meli;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Livewire\Component;
@@ -38,7 +36,7 @@ class MercadolivreIntegrationForm extends Component
     public function render()
     {
         if ($this->code && (Crypt::decrypt($this->state) == Auth::id())) {
-            return $this->service->authorize($this->code, env('MELI_CALLBACK'));
+            $this->service->authorize($this->code, env('MELI_CALLBACK'));
         }
 
         return view('livewire.mercadolivre-integration-form', [

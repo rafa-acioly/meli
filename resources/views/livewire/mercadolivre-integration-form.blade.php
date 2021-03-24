@@ -9,11 +9,7 @@
 
     <x-slot name="content">
         <h3 class="text-lg font-medium text-gray-900">
-            @if(!$enabled)
-                Você <strong>ainda não habilitou</strong> a integração.
-            @else
-                Você <strong>já habilitou</strong> a integração.
-            @endif
+            Você @if($enabled) <strong>já habilitou</strong> @else <strong>ainda não habilitou</strong> @endif a integração.
         </h3>
 
         <div class="mt-3 max-w-xl text-sm text-gray-600">
