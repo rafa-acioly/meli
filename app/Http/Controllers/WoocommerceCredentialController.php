@@ -7,9 +7,10 @@ use App\Models\User;
 use App\Resources\Woocommerce\Woocommerce;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Crypt;
 
-class WoocommerceCredential extends Controller
+class WoocommerceCredentialController extends Controller
 {
     /**
      * Receive a POST request from woocommerce containing the store credentials.
@@ -26,7 +27,9 @@ class WoocommerceCredential extends Controller
         Auth::login($user);
         $wooClient = new Woocommerce($user->credential);
 
-        WoocommerceWebhookCreation::dispatch($wooClient);
+        Bus::chain([
+            WoocommerceWebhookCreation::dispatch($wooClient),
+        ]);
 
         return response(null);
     }

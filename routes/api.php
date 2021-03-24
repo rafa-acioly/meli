@@ -5,7 +5,7 @@ use App\Adapters\MeliAuthorizationServiceAdapter;
 use App\Adapters\MeliEnvironmentAdapter;
 use App\Http\Controllers\Syncs\WooToMeliOrderController;
 use App\Http\Controllers\Syncs\WooToMeliProductController;
-use App\Http\Controllers\WoocommerceCredential;
+use App\Http\Controllers\WoocommerceCredentialController;
 use Dsc\MercadoLivre\Announcement;
 use Dsc\MercadoLivre\Announcement\Item;
 use Dsc\MercadoLivre\Announcement\Picture;
@@ -124,7 +124,7 @@ Route::group(['prefix' => 'woocommerce'], function() {
     /**
      * Route to save clients tokens and create webhooks.
      */
-    Route::post('/credential', [WoocommerceCredential::class, 'store'])->name('woocommerce.credential');
+    Route::post('/credential', [WoocommerceCredentialController::class, 'store'])->name('woocommerce.credential');
 
     /**
      * Routes to receive updates from woocommerce webhooks
