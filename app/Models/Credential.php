@@ -19,6 +19,6 @@ class Credential extends Model
 
     public function isEnabled(): bool
     {
-        return $this->consumer_key != null && $this->consumer_secret != null;
+        return !is_null( $this->consumer_key) && !is_null($this->consumer_secret);
     }
 }

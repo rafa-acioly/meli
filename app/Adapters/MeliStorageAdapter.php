@@ -41,6 +41,6 @@ class MeliStorageAdapter implements StorageInterface
 
     private function getStorageKey($name): string
     {
-        return $name . '_' . Auth::id();
+        return $name . '_' . $this->userID;
     }
 }
