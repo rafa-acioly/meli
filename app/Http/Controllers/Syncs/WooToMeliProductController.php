@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Syncs;
 
 use App\Http\Requests\WoocommerceProductRequest;
 use Illuminate\Http\Request;

@@ -3,11 +3,9 @@
 use App\Adapters\MeliAdapter;
 use App\Adapters\MeliAuthorizationServiceAdapter;
 use App\Adapters\MeliEnvironmentAdapter;
+use App\Http\Controllers\Syncs\WooToMeliOrderController;
+use App\Http\Controllers\Syncs\WooToMeliProductController;
 use App\Http\Controllers\WoocommerceCredential;
-use App\Http\Controllers\WooToMeliOrderController;
-use App\Http\Controllers\WooToMeliProductController;
-use App\Jobs\WoocommerceOrderWebhook;
-use App\Jobs\WoocommerceProductWebhook;
 use Dsc\MercadoLivre\Announcement;
 use Dsc\MercadoLivre\Announcement\Item;
 use Dsc\MercadoLivre\Announcement\Picture;
@@ -131,6 +129,11 @@ Route::group(['prefix' => 'woocommerce'], function() {
     /**
      * Routes to receive updates from woocommerce webhooks
      */
-    Route::post('/products', [WooToMeliProductController::class, 'update'])->name('woocommerce.webhook.product');
-    Route::post('/orders', [WooToMeliOrderController::class, 'update'])->name('woocommerce.webhook.order');
+    Route::post('/products', [WooToMeliProductController::class, 'update'])
+        ->name('woocommerce.webhook.product')
+        ->middleware(['woocommerce-webhook']);
+
+    Route::post('/orders', [WooToMeliOrderController::class, 'update'])
+        ->name('woocommerce.webhook.order')
+        ->middleware(['woocommerce-webhook']);
 });

@@ -46,7 +46,7 @@ class Webhook extends AbstractApi
 
     public function batch()
     {
-        $userIDEncrypted = ['usr' => Crypt::encrypt(Auth::id())];
+        $userIDEncrypted = ['user_id' => Crypt::encrypt(Auth::id())];
         $data = [
             'create' => [
                 [

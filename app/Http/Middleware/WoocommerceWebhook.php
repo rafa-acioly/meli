@@ -10,7 +10,6 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
-use Laravel\Sanctum\PersonalAccessToken;
 
 class WoocommerceWebhook
 {
@@ -29,14 +28,7 @@ class WoocommerceWebhook
             ], Response::HTTP_UNAUTHORIZED);
         }
 
-
-//        if (!$this->hasValidSignature($request)) {
-//            return \response()->json([
-//                'error' => 'Webhook-signature does not match'
-//            ], Response::HTTP_UNAUTHORIZED);
-//        }
-
-        if (!$this->hasValidToken($request)) {
+        if (!$this->canLoginUser($request)) {
             return \response()->json([
                 'error' => 'Unauthenticated.'
             ], Response::HTTP_UNAUTHORIZED);
@@ -45,16 +37,16 @@ class WoocommerceWebhook
         return $next($request);
     }
 
-    public function hasValidToken(Request $request): bool
+    public function canLoginUser(Request $request): bool
     {
-        $userIDEncrypted = $request->query('usr');
-        $userExist = User::find(Crypt::decrypt($userIDEncrypted));
+        $userIDEncrypted = $request->query('user_id');
+        $user = User::find(Crypt::decrypt($userIDEncrypted));
 
-        if (!$userIDEncrypted || !$userExist) {
+        if (!$userIDEncrypted || !$user) {
             return false;
         }
 
-        Auth::loginUsingId(1);
+        Auth::login($user);
         return true;
     }
 
