@@ -8,7 +8,9 @@ use App\Models\Credential;
 use App\Resources\Connectors\Service;
 use App\Resources\Connectors\ServiceConnector;
 use App\Resources\Connectors\WoocommerceConnector;
+use App\Resources\Woocommerce\Api\Attribute;
 use App\Resources\Woocommerce\Api\Authorization;
+use App\Resources\Woocommerce\Api\Category;
 use App\Resources\Woocommerce\Api\Customer;
 use App\Resources\Woocommerce\Api\Order;
 use App\Resources\Woocommerce\Api\Product;
@@ -62,6 +64,16 @@ class Woocommerce
     public function webhook(): Webhook
     {
         return new Webhook($this->client);
+    }
+
+    public function category(): Category
+    {
+        return new Category($this->client);
+    }
+
+    public function attribute()
+    {
+        return new Attribute($this->client);
     }
 
     public static function authorization(string $storeURL): void

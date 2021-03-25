@@ -64,7 +64,7 @@ class WooToMeliOrderSync implements ShouldQueue
      */
     public function middleware(): array
     {
-        return [new ThrottlesExceptionsWithRedis(5, 2)];
+        return [new ThrottlesExceptionsWithRedis(3, 1)];
     }
 
     /**

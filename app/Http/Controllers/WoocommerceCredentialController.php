@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\WoocommerceProductAttributeSync;
+use App\Jobs\WoocommerceProductCategoriesSync;
 use App\Jobs\WoocommerceWebhookCreation;
 use App\Models\User;
 use App\Resources\Woocommerce\Woocommerce;
@@ -28,7 +30,9 @@ class WoocommerceCredentialController extends Controller
         $wooClient = new Woocommerce($user->credential);
 
         Bus::chain([
-            WoocommerceWebhookCreation::dispatch($wooClient),
+//            WoocommerceWebhookCreation::dispatch($wooClient),
+            WoocommerceProductCategoriesSync::dispatch($wooClient),
+            WoocommerceProductAttributeSync::dispatch($wooClient),
         ]);
 
         return response(null);

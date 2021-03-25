@@ -8,7 +8,7 @@ use App\Resources\Woocommerce\Entity\Product as ProductEntity;
 
 class Product extends AbstractApi
 {
-    const ENDPOINT = "products";
+    const ENDPOINT = 'products';
 
     public function find(string $sku): ProductEntity
     {

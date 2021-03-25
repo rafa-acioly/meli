@@ -14,7 +14,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class WoocommerceProductCategoriesSync implements ShouldQueue
+class WoocommerceProductAttributeSync implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -52,13 +52,13 @@ class WoocommerceProductCategoriesSync implements ShouldQueue
     public function handle()
     {
         $start = now();
-        $categories = $this->client->category()->list();
+        $attributes = $this->client->attribute()->list();
 
-        Log::channel('stderr')->info("Category process took: " . now()->diffInSeconds($start) . "s" . "-" . $categories);
+        Log::channel('stderr')->info("Attribute process took: " . now()->diffInSeconds($start). "s" . "-" . $attributes);
 
-        $productCategories = $categories->map(fn($categoryEntity) => $categoryEntity->toModel());
+        $productAttributes = $attributes->map(fn($attr) => $attr->toModel());
 
-        Auth::user()->productCategories()->insert($productCategories);
+        Auth::user()->productAttributes()->insert($productAttributes);
     }
 
     /**
