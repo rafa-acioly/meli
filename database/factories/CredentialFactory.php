@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\ProductCategory;
+use App\Models\Credential;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ProductCategoryFactory extends Factory
+class CredentialFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = ProductCategory::class;
+    protected $model = Credential::class;
 
     /**
      * Define the model's default state.
@@ -22,10 +22,7 @@ class ProductCategoryFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => 2,
-            'id_on_store' => $this->faker->randomNumber(3),
-            'name' => $this->faker->name,
-            'meli_name' => $this->faker->name
+            'store_url' => $this->faker->url,
         ];
     }
 }

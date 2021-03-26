@@ -20,7 +20,7 @@
             {{ __('Dados inválidos.') }}
         </x-jet-action-message>
 
-        <x-jet-button>
+        <x-jet-button wire:loading.attr="disabled">
             {{ __('Habilitar') }}
         </x-jet-button>
     </x-slot>

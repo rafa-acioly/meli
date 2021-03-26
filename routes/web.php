@@ -22,4 +22,8 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
+Route::middleware(['auth:sanctum', 'verified'])->get('/settings/categories', function () {
+    return view('settings.categories.show');
+})->name('settings.categories');
+
 Route::resource('products', ProductsController::class)->middleware(['auth:sanctum', 'verified']);

@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Models\User;
 use App\Resources\Woocommerce\Entity\Product as ProductEntity;
-use Dsc\MercadoLivre\Announcement;
 use Dsc\MercadoLivre\Meli;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

@@ -8,20 +8,6 @@ use App\Resources\Enum\ProductType;
 
 class Product extends AbstractEntity
 {
-    public int $id;
-    public string $sku;
-    public string $name;
-    public string $dateCreated;
-    public string $status;
-    public string $catalogVisibility;
-    public string $price;
-    public string $regularPrice;
-    public bool $onSale;
-    public bool $virtual;
-    public bool $purchasable;
-    public string $stockStatus;
-    public string $weight;
-    public int $stockQuantity;
 
     public ProductType $type;
 
