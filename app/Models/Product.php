@@ -10,7 +10,7 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['buying_mode', 'woo_product_sku', 'meli_product_sku'];
+    protected $fillable = ['buying_mode', 'woo_product_sku', 'meli_product_sku', 'name', 'price', 'image_url'];
 
     public function user(): BelongsTo
     {

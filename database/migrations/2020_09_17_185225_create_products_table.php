@@ -19,6 +19,9 @@ class CreateProductsTable extends Migration
             $table->string('buying_mode');
             $table->string('woo_product_sku');
             $table->string('meli_product_sku');
+            $table->string('name');
+            $table->decimal('price');
+            $table->string('image_url');
             $table->softDeletes();
             $table->timestamps();
         });
