@@ -2,17 +2,16 @@
 
 namespace App\Jobs;
 
+use App\Models\User;
 use App\Resources\Woocommerce\Woocommerce;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\ThrottlesExceptionsWithRedis;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Collection;
 
 class WoocommerceProductCategoriesSync implements ShouldQueue
 {
@@ -30,18 +29,21 @@ class WoocommerceProductCategoriesSync implements ShouldQueue
      *
      * @var int
      */
-    public $timeout = 120;
+    public $timeout = 30;
 
     private Woocommerce $client;
+
+    private User $user;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Woocommerce $client)
+    public function __construct(Woocommerce $client, User $user)
     {
         $this->client = $client;
+        $this->user = $user;
     }
 
     /**
@@ -51,14 +53,23 @@ class WoocommerceProductCategoriesSync implements ShouldQueue
      */
     public function handle()
     {
-        $start = now();
-        $categories = $this->client->category()->list();
+        $wooCategories = $this->client->category()->list();
 
-        Log::channel('stderr')->info("Category process took: " . now()->diffInSeconds($start) . "s" . "-" . $categories);
+        $categoryModels = $wooCategories->map(fn($wooCategory) => $wooCategory->toModel());
 
-        $productCategories = $categories->map(fn($categoryEntity) => $categoryEntity->toModel());
+        $this->removeUnnecessaryCategories($categoryModels->pluck('id_on_store'));
 
-        Auth::user()->productCategories()->insert($productCategories);
+        $categoryModels->each(fn($category) => $this->user->productCategories()->updateOrCreate([
+            'id_on_store' => $category->id_on_store
+        ], $category->toArray()));
+    }
+
+
+    private function removeUnnecessaryCategories(Collection $categoryIDS)
+    {
+        $this->user->productCategories()
+            ->whereNotIn('id_on_store', $categoryIDS)
+            ->delete();
     }
 
     /**
@@ -78,6 +89,6 @@ class WoocommerceProductCategoriesSync implements ShouldQueue
      */
     public function retryUntil(): Carbon
     {
-        return now()->addMinutes(1);
+        return now()->addMinutes();
     }
 }

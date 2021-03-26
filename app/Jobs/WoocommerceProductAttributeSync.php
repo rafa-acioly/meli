@@ -2,17 +2,15 @@
 
 namespace App\Jobs;
 
+use App\Models\User;
 use App\Resources\Woocommerce\Woocommerce;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\Middleware\ThrottlesExceptionsWithRedis;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Collection;
 
 class WoocommerceProductAttributeSync implements ShouldQueue
 {
@@ -30,18 +28,20 @@ class WoocommerceProductAttributeSync implements ShouldQueue
      *
      * @var int
      */
-    public $timeout = 120;
+    public $timeout = 30;
 
     private Woocommerce $client;
+    private User $user;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Woocommerce $client)
+    public function __construct(Woocommerce $client, User $user)
     {
         $this->client = $client;
+        $this->user = $user;
     }
 
     /**
@@ -51,14 +51,25 @@ class WoocommerceProductAttributeSync implements ShouldQueue
      */
     public function handle()
     {
-        $start = now();
-        $attributes = $this->client->attribute()->list();
+        $wooAttributes = $this->client->attribute()->list();
 
-        Log::channel('stderr')->info("Attribute process took: " . now()->diffInSeconds($start). "s" . "-" . $attributes);
+        $attributeModels = $wooAttributes->map(fn($attr) => $attr->toModel());
 
-        $productAttributes = $attributes->map(fn($attr) => $attr->toModel());
+        $this->removeUnnecessaryAttributes($attributeModels->pluck('id_on_store'));
 
-        Auth::user()->productAttributes()->insert($productAttributes);
+        $attributeModels->each(fn($attribute) => $this->user->productAttributes()->updateOrCreate([
+            'id_on_store' => $attribute->id_on_store
+        ], $attribute->toArray()));
+    }
+
+    /**
+     * @param Collection<int> $attributeIDS
+     */
+    public function removeUnnecessaryAttributes(Collection $attributeIDS)
+    {
+        $this->user->productAttributes()
+            ->whereNotIn('id_on_store', $attributeIDS)
+            ->delete();
     }
 
     /**
@@ -78,6 +89,6 @@ class WoocommerceProductAttributeSync implements ShouldQueue
      */
     public function retryUntil(): Carbon
     {
-        return now()->addMinutes(1);
+        return now()->addMinutes();
     }
 }

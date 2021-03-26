@@ -8,7 +8,6 @@ use App\Jobs\WoocommerceWebhookCreation;
 use App\Models\User;
 use App\Resources\Woocommerce\Woocommerce;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Crypt;
 
@@ -24,15 +23,15 @@ class WoocommerceCredentialController extends Controller
     {
         $keys = $request->only(['consumer_key', 'consumer_secret']);
         $user = User::findOrFail(Crypt::decrypt($request->input('user_id')));
+
         $user->credential()->update($keys);
 
-        Auth::login($user);
         $wooClient = new Woocommerce($user->credential);
 
         Bus::chain([
-//            WoocommerceWebhookCreation::dispatch($wooClient),
-            WoocommerceProductCategoriesSync::dispatch($wooClient),
-            WoocommerceProductAttributeSync::dispatch($wooClient),
+            WoocommerceWebhookCreation::dispatch($wooClient),
+            WoocommerceProductCategoriesSync::dispatch($wooClient, $user),
+            WoocommerceProductAttributeSync::dispatch($wooClient, $user),
         ]);
 
         return response(null);
