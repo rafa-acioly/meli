@@ -17,6 +17,13 @@ class WoocommerceProductAttributeSync implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
+     * The name of the queue the job should be sent to.
+     *
+     * @var string|null
+     */
+    public $queue = 'product_attribute_sync';
+
+    /**
      * The number of times the job may be attempted.
      *
      * @var int

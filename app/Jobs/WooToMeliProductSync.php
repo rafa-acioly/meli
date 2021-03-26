@@ -2,17 +2,16 @@
 
 namespace App\Jobs;
 
-use App\Http\Requests\WoocommerceProductRequest;
+use App\Models\User;
+use App\Resources\Woocommerce\Entity\Product as ProductEntity;
 use Dsc\MercadoLivre\Announcement;
 use Dsc\MercadoLivre\Meli;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\ThrottlesExceptionsWithRedis;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
 
 class WooToMeliProductSync implements ShouldQueue
 {
@@ -34,17 +33,20 @@ class WooToMeliProductSync implements ShouldQueue
 
     private Meli $client;
 
-    private WoocommerceProductRequest $request;
+    private ProductEntity $product;
+
+    private User $user;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Meli $client, WoocommerceProductRequest $request)
+    public function __construct(Meli $client, ProductEntity $product, User $user)
     {
         $this->client = $client;
-        $this->request = $request;
+        $this->product = $product;
+        $this->user = $user;
     }
 
     /**
@@ -54,18 +56,11 @@ class WooToMeliProductSync implements ShouldQueue
      */
     public function handle()
     {
-        $announcement = new Announcement($this->client);
-
-        $announcement->update('', [
-            'title' => $this->request->input('name'),
-            'price' => $this->request->input('price'),
-            'available_quantity' => $this->request->input('stock_quantity'),
-
-            /**
-             * TODO: Verificar qual o campo do woocommerce define se o produto esta ativo
-             */
-            'status' => $this->request->input('')
-        ]);
+        /**
+         * 1. Get the product from Woocommerce API
+         * 2. Update the product on Mercado livre API
+         * 3. Update the product on our database
+         */
     }
 
     /**

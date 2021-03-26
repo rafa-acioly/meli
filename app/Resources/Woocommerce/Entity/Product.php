@@ -21,6 +21,7 @@ class Product extends AbstractEntity
     public bool $purchasable;
     public string $stockStatus;
     public string $weight;
+    public int $stockQuantity;
 
     public ProductType $type;
 
@@ -35,4 +36,9 @@ class Product extends AbstractEntity
      * @var array<ProductCategory>
      */
     public array $categories = [];
+
+    public function getStatus(): string
+    {
+        return $this->status == 'publish' ? 'active' : 'inactive';
+    }
 }

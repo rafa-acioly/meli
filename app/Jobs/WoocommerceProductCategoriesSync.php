@@ -18,6 +18,13 @@ class WoocommerceProductCategoriesSync implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
+     * The name of the queue the job should be sent to.
+     *
+     * @var string|null
+     */
+    public $queue = 'product_category_sync';
+
+    /**
      * The number of times the job may be attempted.
      *
      * @var int
