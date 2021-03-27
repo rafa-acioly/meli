@@ -29,6 +29,6 @@ class ProductCategories extends Component
         WoocommerceProductCategoriesSync::dispatch(new Woocommerce($credential), Auth::user());
 
         $this->confirmFullSync = !$this->confirmFullSync;
-        $this->syncAllConfirmed = !$this->syncAllConfirmed;
+        notify()->success('Suas categorias serão sincronizadas em breve.', 'Sucesso!');
     }
 }

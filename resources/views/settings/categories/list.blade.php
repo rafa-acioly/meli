@@ -1,77 +1,8 @@
-{{--<table class="min-w-full divide-y divide-gray-200">--}}
-{{--    <thead class="bg-gray-50">--}}
-{{--    <tr>--}}
-{{--        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">--}}
-{{--            # ID--}}
-{{--        </th>--}}
-{{--        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">--}}
-{{--            Categoria na loja--}}
-{{--        </th>--}}
-{{--        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">--}}
-{{--            Categoria no mercado livre--}}
-{{--        </th>--}}
-{{--        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">--}}
-{{--            Ultima atualização--}}
-{{--        </th>--}}
-{{--        <th scope="col" class="relative px-6 py-3">--}}
-{{--            <span class="sr-only">Editar</span>--}}
-{{--        </th>--}}
-{{--    </tr>--}}
-{{--    </thead>--}}
-{{--    <tbody class="bg-white divide-y divide-gray-200">--}}
-{{--        @forelse($categories as $category)--}}
-{{--            <tr>--}}
-{{--                <td class="px-6 py-4 whitespace-nowrap">--}}
-{{--                    <div class="flex items-center">--}}
-{{--                        <div class="flex-shrink-0 h-10 w-10">--}}
-{{--                            <img class="h-10 w-10 rounded-full" src="https://ui-avatars.com/api/?name={{ $category->name }}&color=7F9CF5&background=EBF4FF" alt="">--}}
-{{--                        </div>--}}
-{{--                        <div class="ml-4">--}}
-{{--                            <div class="text-sm font-medium text-gray-900">--}}
-{{--                                {{ $category->name }}--}}
-{{--                            </div>--}}
-{{--                            <div class="text-sm text-gray-500">--}}
-{{--                                ID: {{ $category->id }}--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </td>--}}
-{{--                <td class="px-6 py-4 whitespace-nowrap">--}}
-{{--                    <div class="text-sm text-gray-900">{{ $category->name }}</div>--}}
-{{--                </td>--}}
-{{--                <td class="px-6 py-4 whitespace-nowrap">--}}
-{{--                    <div class="text-sm text-gray-900">{{ $category->meli_name }}</div>--}}
-{{--                </td>--}}
-{{--                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">--}}
-{{--                    {{ $category->updated_at->format('d-m-y H:m:s') }}--}}
-{{--                </td>--}}
-{{--                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">--}}
-{{--                    <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">--}}
-{{--                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">--}}
-{{--                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />--}}
-{{--                        </svg>--}}
-{{--                    </div>--}}
-{{--                </td>--}}
-{{--            </tr>--}}
-{{--        @empty--}}
-{{--            <tr>--}}
-{{--                <td class="px-6 py-4 whitespace-nowrap" colspan="5">--}}
-{{--                    <div class="flex-items-center">--}}
-{{--                        Sincronizando...--}}
-{{--                    </div>--}}
-{{--                </td>--}}
-{{--            </tr>--}}
-{{--        @endforelse--}}
-{{--    </tbody>--}}
-{{--</table>--}}
-
-
-
 <div class="mx-auto container bg-white dark:bg-gray-800 dark:bg-gray-800 shadow rounded">
     <div class="flex flex-col lg:flex-row p-4 lg:p-8 justify-between items-start lg:items-stretch w-full">
         <div class="w-full flex flex-col lg:flex-row items-start lg:items-center justify-end">
             <div class="flex items-center lg:border-l lg:border-r border-gray-300 py-3 lg:py-0 lg:px-6">
-                <p class="text-base text-gray-600 dark:text-gray-400" id="page-view">Viewing 1 - 20 of 60</p>
+                <p class="text-base text-gray-600 dark:text-gray-400" id="page-view">Viewing 1 - {{ $categories->count() }} of 60</p>
                 <a class="text-gray-600 dark:text-gray-400 ml-2 border-transparent border cursor-pointer rounded">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" />
@@ -85,6 +16,8 @@
                     </svg>
                 </a>
             </div>
+
+            <x:notify-messages />
 
             <div class="lg:ml-6 flex items-center">
                 <button
@@ -114,17 +47,6 @@
                         </x-jet-button>
                     </x-slot>
                 </x-jet-confirmation-modal>
-
-                <x-jet-dialog-modal wire:model="syncAllConfirmed">
-                    <x-slot name="title">Sincronização confirmada</x-slot>
-                    <x-slot name="content">Em alguns minutos suas categorias serão sincronizadas.</x-slot>
-
-                    <x-slot name="footer">
-                        <x-jet-button class="ml-2" wire:click="$toggle('syncAllConfirmed')" wire:loading.attr="disabled">
-                            Ok
-                        </x-jet-button>
-                    </x-slot>
-                </x-jet-dialog-modal>
             </div>
         </div>
     </div>
