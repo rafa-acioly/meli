@@ -12,18 +12,31 @@ use Livewire\Component;
 
 class ProductCategories extends Component
 {
-    private $meliClient;
+    protected $meliClient;
 
     public $categories = [];
     public bool $confirmFullSync = false;
     public bool $syncAllConfirmed = false;
 
-    public array $meliFirstLevelCategory = [];
+    public $state = null;
+
+    public array $meliCategories = [];
+
+    /**
+     * @var CategoryService|mixed
+     */
+    protected $service = null;
+
+    public function __construct($id = null)
+    {
+        $cli = new MeliAdapter(env('MELI_ID'), env('MELI_SECRET'));
+        $this->service = new CategoryService($cli);
+        parent::__construct($id);
+    }
 
     public function mount()
     {
         $this->categories = Auth::user()->productCategories;
-        $this->meliClient = new CategoryService();
     }
 
     public function render()
@@ -42,7 +55,12 @@ class ProductCategories extends Component
 
     public function edit($category)
     {
-        $categories = $this->meliClient->findCategories(Site::BRASIL);
-        dd($categories);
+        $this->state = $category;
+        $this->meliCategories[] = $this->service->findCategories(Site::BRASIL)->toArray();
+    }
+
+    public function chooseNextCategorySection(string $categoryCode)
+    {
+        $this->meliCategories[] = $this->service->findCategory($categoryCode)->getChildrenCategories()->toArray();
     }
 }

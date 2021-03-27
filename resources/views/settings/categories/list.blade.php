@@ -4,22 +4,45 @@
         <x-slot name="title">
             Sincronização em massa
         </x-slot>
-
         <x-slot name="content">
             <p>Você tem certeza que deseja sincronizar todas as categorias de uma vez?</p>
             <p>Isso pode levar alguns minutos.</p>
         </x-slot>
-
         <x-slot name="footer">
             <x-jet-secondary-button wire:click="$toggle('confirmFullSync')" wire:loading.attr="disabled">
                 Deixa pra lá
             </x-jet-secondary-button>
-
             <x-jet-button class="ml-2" wire:click="syncAll" wire:loading.attr="disabled">
                 Sincronizar
             </x-jet-button>
         </x-slot>
     </x-jet-confirmation-modal>
+
+    <x-jet-dialog-modal wire:model="state">
+        <x-slot name="title">Configurar categoria: {{ $state ? $state['name'] : '-' }}</x-slot>
+        <x-slot name="content">
+            @if($meliCategories)
+                @foreach($meliCategories as $categoryType)
+                    <label class="text-gray-700" for="animals">
+                        Categoria
+                        <select wire:change="choose($event.target.value)" id="animals" class="w-full block w-52 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" name="animals">
+                            <option disabled selected >
+                                Selecione...
+                            </option>
+                            @foreach($categoryType as $category)
+                                <option value="{{ $category->getId() }}" wire:key="{{ $category->getId() }}">{{ $category->getName() }}</option>
+                            @endforeach
+                        </select>
+                    </label>
+                @endforeach
+            @endif
+        </x-slot>
+        <x-slot name="footer">
+            <x-jet-secondary-button wire:click="$toggle('confirmFullSync')" wire:loading.attr="disabled">
+                Deixa pra lá
+            </x-jet-secondary-button>
+        </x-slot>
+    </x-jet-dialog-modal>
 
     <x:notify-messages />
 
@@ -92,7 +115,7 @@
                             <div class="w-2 h-2 rounded-full bg-{{ $category->name ? 'red' : 'green' }}-400"></div>
                         </td>
                         <td class="pr-8 relative">
-                            <button class="text-gray-500 rounded cursor-pointer border border-transparent focus:outline-none">
+                            <button class="text-gray-500 rounded cursor-pointer border border-transparent focus:outline-none" wire:click="edit({{ $category }})">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon cursor-pointer icon-tabler icon-tabler-edit" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" />
                                     <path d="M9 7 h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" />
