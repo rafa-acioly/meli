@@ -7,41 +7,40 @@ use App\Jobs\WoocommerceProductCategoriesSync;
 use App\Resources\Woocommerce\Woocommerce;
 use Dsc\MercadoLivre\Environments\Site;
 use Dsc\MercadoLivre\Requests\Category\CategoryService;
+use Dsc\MercadoLivre\Requests\Service;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class ProductCategories extends Component
 {
-    protected $meliClient;
 
-    public $categories = [];
-    public bool $confirmFullSync = false;
-    public bool $syncAllConfirmed = false;
+    public $confirmFullSync, $editModal;
 
-    public $state = null;
+    public $categories;
 
-    public array $meliCategories = [];
+    public $selectedFirstLevel = null;
 
-    /**
-     * @var CategoryService|mixed
-     */
-    protected $service = null;
+    public $selectedSecondLevel = null;
+    public $secondLevelOptions;
 
-    public function __construct($id = null)
+    public $selectedThirdLevel = null;
+    public $thirdLevelOptions;
+
+    public function render()
     {
-        $cli = new MeliAdapter(env('MELI_ID'), env('MELI_SECRET'));
-        $this->service = new CategoryService($cli);
-        parent::__construct($id);
+        $categories = (new CategoryService())->findCategories(Site::BRASIL)->toArray();
+
+        return view('settings.categories.list', [
+            'categoriesOptions' => collect($categories)
+        ]);
     }
 
     public function mount()
     {
         $this->categories = Auth::user()->productCategories;
-    }
-
-    public function render()
-    {
-        return view('settings.categories.list');
+        $this->secondLevelOptions = collect();
+        $this->thirdLevelOptions = collect();
     }
 
     public function syncAll()
@@ -53,14 +52,22 @@ class ProductCategories extends Component
         notify()->success('Suas categorias serão sincronizadas em breve.', 'Sucesso!');
     }
 
-    public function edit($category)
+    public function updatedSelectedFirstLevel($value)
     {
-        $this->state = $category;
-        $this->meliCategories[] = $this->service->findCategories(Site::BRASIL)->toArray();
+        $categories = (new CategoryService())->findCategory($value)->getChildrenCategories()->toArray();
+        $this->secondLevelOptions = collect($categories);
+        $this->selectedSecondLevel = null;
     }
 
-    public function chooseNextCategorySection(string $categoryCode)
+    public function updatedSelectedSecondLevel($value)
     {
-        $this->meliCategories[] = $this->service->findCategory($categoryCode)->getChildrenCategories()->toArray();
+        $categories = (new CategoryService())->findCategory($value)->getChildrenCategories()->toArray();
+        $this->thirdLevelOptions = collect($categories);
+        $this->selectedThirdLevel = null;
+    }
+
+    public function updatedSelectedThirdLevel($value)
+    {
+        dd($value);
     }
 }
