@@ -15,7 +15,7 @@ class ProductPage extends Component
     public function render()
     {
         return view('products.index', [
-            'products' => Auth::user()->products()->where('name', 'like', '%'.$this->search.'%')->get()
+            'products' => Auth::user()->products()->where('name', 'like', '%'.$this->search.'%')->paginate(15)
         ]);
     }
 }
