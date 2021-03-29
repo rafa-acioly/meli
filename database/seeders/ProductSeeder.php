@@ -17,7 +17,6 @@ class ProductSeeder extends Seeder
     {
         Product::factory()
             ->count(10)
-            ->for(User::factory())
             ->create();
     }
 }

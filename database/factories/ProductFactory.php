@@ -24,10 +24,14 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => User::factory(),
+            'user_id' => 1,
+            'id_on_store' => $this->faker->numberBetween(10, 100),
             'buying_mode' => 'free',
-            'woo_product_sku' => Str::random(5),
-            'meli_product_sku' => Str::random(5)
+            'sku' => Str::random(5),
+            'meli_sku' => Str::random(5),
+            'name' => $this->faker->name,
+            'price' => $this->faker->randomFloat(2, 100, 200),
+            'image_url' => $this->faker->imageUrl(260, 260)
         ];
     }
 }
