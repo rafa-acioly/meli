@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProductsController;
+use App\Http\Livewire\AddProductPage;
 use App\Http\Livewire\ProductPage;
 use Illuminate\Support\Facades\Route;
 
@@ -30,4 +31,5 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/settings/categories', fun
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/products', ProductPage::class)->name('products');
+    Route::get('/products/add', AddProductPage::class)->name('products.add');
 });

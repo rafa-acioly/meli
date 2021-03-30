@@ -5,6 +5,7 @@ namespace App\Resources\Woocommerce\Api;
 
 
 use App\Resources\Woocommerce\Entity\Product as ProductEntity;
+use Illuminate\Support\Collection;
 
 class Product extends AbstractApi
 {
@@ -12,23 +13,18 @@ class Product extends AbstractApi
 
     public function find(string $sku): ProductEntity
     {
-        $product = $this->client->get(sprintf('%s/%s', self::ENDPOINT, $sku));
-        $product = json_decode($product);
-
-        return new ProductEntity($product);
+        $product = $this->client->get(self::ENDPOINT, ['sku' => $sku]);
+        return new ProductEntity($product[0]);
     }
 
     /**
      * @param array<string> $skus
-     * @return array<ProductEntity>
+     * @return Collection<ProductEntity>
      */
-    public function list(array $skus): array
+    public function list(array $skus)
     {
-        $products = $this->client->get(self::ENDPOINT, $skus);
-        $products = json_decode($products);
+        $products = $this->client->get(self::ENDPOINT, ['sku' => $skus]);
 
-        return array_map(function($product) {
-            return new ProductEntity($product);
-        }, $products);
+        return collect($products)->map(fn($product) => new ProductEntity($product));
     }
 }

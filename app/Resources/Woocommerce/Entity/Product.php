@@ -5,18 +5,23 @@ namespace App\Resources\Woocommerce\Entity;
 
 
 use App\Resources\Enum\ProductType;
+use Illuminate\Support\Collection;
 
 class Product extends AbstractEntity
 {
+    public string $name;
 
-    public ProductType $type;
-
-    public ProductDimensions $dimensions;
+    public string $type;
 
     /**
-     * @var array<ProductImages>
+     * @var Collection<ProductDimensions>
      */
-    public array $images = [];
+    public $dimensions;
+
+    /**
+     * @var Collection<ProductImage>
+     */
+    public $images;
 
     /**
      * @var array<ProductCategory>
@@ -26,5 +31,15 @@ class Product extends AbstractEntity
     public function getStatus(): string
     {
         return $this->status == 'publish' ? 'active' : 'inactive';
+    }
+
+    public function setDimensions($dimensions)
+    {
+        $this->dimensions = new ProductDimensions($dimensions);
+    }
+
+    public function setImages(array $images)
+    {
+        $this->images = collect($images)->map(fn($image) => new ProductImage($image));
     }
 }

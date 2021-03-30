@@ -4,7 +4,7 @@
 namespace App\Resources\Woocommerce\Entity;
 
 
-class ProductImages
+class ProductImage extends AbstractEntity
 {
     public int $id;
     public string $src;

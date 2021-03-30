@@ -29,11 +29,13 @@ class Woocommerce
     const EVENT_TYPE_KEY = 'x-wc-webhook-resource';
 
     private Credential $credential;
-    private Client $client;
+
+    public Client $client;
 
     public function __construct(Credential $credential)
     {
         $this->credential = $credential;
+
         $this->client = new Client(
             $credential->store_url,
             $credential->consumer_key,
