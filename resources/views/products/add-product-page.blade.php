@@ -15,10 +15,10 @@
                         <div>
                             <svg class="mb-4 h-20 w-20 text-green-500 mx-auto" viewBox="0 0 20 20" fill="currentColor">  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
 
-                            <h2 class="text-2xl mb-4 text-gray-800 text-center font-bold">Registration Success</h2>
+                            <h2 class="text-2xl mb-4 text-yellow-400 text-center font-bold">Publicação concluida!</h2>
 
                             <div class="text-gray-600 mb-8">
-                                Thank you. We have sent you an email to demo@demo.test. Please click the link in the message to activate your account.
+                                Seu produto já foi enviado, em alguns minutos o Mercado Livre atualizara seu produto, se houver qualquer problema por favor entre em contato em <a class="hover:underline" href="mailto:contato@email.com">contato@email.com</a>
                             </div>
 
                             <button
@@ -40,7 +40,7 @@
                                 </div>
 
                                 <div x-show="step === 2">
-                                    <div class="text-lg font-bold text-gray-700 leading-tight">Your Password</div>
+                                    <div class="text-lg font-bold text-gray-700 leading-tight">Configure as categorias</div>
                                 </div>
 
                                 <div x-show="step === 3">
@@ -83,7 +83,7 @@
                                 <main wire:loading.class="opacity-50" class="grid place-items-center bg-gray-100">
                                     <section class="flex flex-col md:flex-row gap-11 py-10 px-5 bg-white rounded-md shadow-lg md:max-w-2xl">
                                         <div class="text-indigo-500 flex flex-col justify-between">
-                                            <img src="{{ $product['images']->first()->src }}" alt="{{ $product['name'] }}" />
+                                            <img src="{{ $product['images'][0]['src'] }}" alt="{{ $product['name'] }}" />
                                         </div>
                                         <div class="text-indigo-500">
                                             <h3 class="uppercase text-black text-2xl font-medium">{{ $product['name'] }}</h3>
@@ -98,22 +98,27 @@
                                         </div>
                                     </section>
                                 </main>
-                            @endunless
+                            @endif
                         </div>
                         <div x-show.transition.in="step === 2">
-
                             <div class="mb-5">
-                                <label for="password" class="font-bold mb-1 text-gray-700 block">Set up password</label>
+                                <p class="font-bold mb-1 text-gray-700 block">Sugestão de categoria</p>
                                 <div class="text-gray-600 mt-2 mb-4">
-                                    Please create a secure password including the following criteria below.
-
-                                    <ul class="list-disc text-sm ml-4 mt-2">
-                                        <li>lowercase letters</li>
-                                        <li>numbers</li>
-                                        <li>capital letters</li>
-                                        <li>special characters</li>
-                                    </ul>
+                                    Para dar maior visibilidade ao seu produto <span class="font-medium">sugerimos que você aceite uma sugestão de categoria</span> para seu produto:
                                 </div>
+                                <x-jet-button class="ml-2" wire:click="suggestCategory" wire:loading.attr="disabled">Sugerir</x-jet-button>
+                                @unless(!$suggestedCategory)
+                                    <div class="text-gray-600 mt-2 mb-4">
+                                        <ul class="list-disc text-sm ml-4 mt-2">
+                                            @foreach($suggestedCategory as $suggestion)
+                                                <li>{{ $suggestion->getDomainName() }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endunless
+                            </div>
+                            <div class="mb-5">
+                                <label for="password" class="font-bold mb-1 text-gray-700 block">Categorias do seu produto</label>
 
                                 <div class="relative">
                                     <input
@@ -143,7 +148,6 @@
 
                                 <p class="mt-5 text-gray-600">Inspired from dribbble shot: Exploration for a password strength meter by <a href="https://dribbble.com/OvertonGraphics" class="text-blue-500">Josh Overton</a>.</p>
                             </div>
-
                         </div>
                         <div x-show.transition.in="step === 3">
                             <div class="mb-5">

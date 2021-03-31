@@ -54,7 +54,7 @@ class Product extends AbstractEntity
 
     public function setImages(array $images)
     {
-        $this->images = collect($images)->map(fn($image) => new ProductImage($image));
+        $this->images = collect($images)->map(fn($image) => (array)$image);
     }
 
     public function setRegularPrice($price)
