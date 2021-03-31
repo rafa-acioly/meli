@@ -35,7 +35,7 @@ class Product extends AbstractEntity
     /**
      * @var array<ProductCategory>
      */
-    public array $categories = [];
+    public $categories = [];
 
     public function exist(): bool
     {
@@ -57,15 +57,18 @@ class Product extends AbstractEntity
         $this->images = collect($images)->map(fn($image) => (array)(new ProductImage($image)));
     }
 
+    public function setCategories(array $categories)
+    {
+        $this->categories = collect($categories)->map(fn($category) => (array)(new ProductCategory($category)));
+    }
+
     public function setRegularPrice($price)
     {
-        dd("regular" . $price);
         $this->regularPrice = $price;
     }
 
     public function setSalePrice($price)
     {
-        dd("sale" . $price);
         $this->salePrice = $price;
     }
 }
