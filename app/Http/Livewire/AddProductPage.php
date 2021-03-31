@@ -2,14 +2,11 @@
 
 namespace App\Http\Livewire;
 
-use App\Adapters\MeliAdapter;
-use App\Resources\Woocommerce\Api\Category;
-use App\Resources\Woocommerce\Entity\Product;
+use App\Adapters\CategoryServiceAdapter;
 use App\Resources\Woocommerce\Woocommerce;
 use Dsc\MercadoLivre\Environments\Site;
 use Dsc\MercadoLivre\Requests\Category\CategoryService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class AddProductPage extends Component
@@ -20,13 +17,13 @@ class AddProductPage extends Component
      * Product is the ProductEntity instance of a woocommerce product
      * @var \App\Resources\Woocommerce\Entity\Product
      */
-    public $product = null;
+    protected $product = null;
 
     /**
      * SuggestedCategory is a instance of Predictor
      * @var \Dsc\MercadoLivre\Requests\Category\Predictor
      */
-    public $suggestedCategory = null;
+    protected $suggestedCategory = null;
 
     /**
      * categoryID is the category ID from Mercado livre category
@@ -38,12 +35,10 @@ class AddProductPage extends Component
 
     public function render()
     {
-        return view('products.add-product-page');
-    }
-
-    public function mount()
-    {
-        $this->wooCli = new Woocommerce(Auth::user()->credential);
+        return view('products.add-product-page', [
+            'product' => $this->product,
+            'suggestedCategory' => $this->suggestedCategory
+        ]);
     }
 
     public function updatedProductSKU(string $sku)
@@ -62,9 +57,8 @@ class AddProductPage extends Component
 
     public function updatedCategoryID($categoryID)
     {
-        $category = collect($this->suggestedCategory)->filter(fn($category) => $category->getCategoryId() == $categoryID);
-        $attributes = $category->first()->getAttributes();
-        dd($attributes);
+        $category = (new CategoryServiceAdapter())->findRequiredCategoryAttributes($categoryID);
+        dd($category);
     }
 
     public function suggestCategory()

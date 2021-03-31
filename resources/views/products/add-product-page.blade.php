@@ -109,13 +109,14 @@
                                     </div>
                                 </div>
                                 @unless(!$suggestedCategory)
-                                    <div class="flex">
+                                    <div class="flex" wire:loading.class="opacity-50" id="categoryIDS">
                                         @foreach($suggestedCategory as $suggestion)
                                             <label
                                                 class="flex justify-start items-center text-truncate rounded-lg bg-white pl-4 pr-6 py-3 shadow-sm mr-4">
                                                 <div class="text-teal-600 mr-3">
                                                     <input
                                                         wire:model="categoryID"
+                                                        wire:key="{{ $suggestion->getCategoryId() }}"
                                                         type="radio"
                                                         name="categoryID"
                                                         value="{{ $suggestion->getCategoryId() }}"
@@ -126,6 +127,17 @@
                                         @endforeach
                                     </div>
                                 @endunless
+
+                                <div wire:loading.flex class="flex items-center justify-center">
+                                    <div class="animate-pulse flex justify-center items-center  py-6">
+                                        <div class="h-8 w-8 text-cool-gray-300 m-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                            </svg>
+                                        </div>
+                                        <span class="font-medium py-5 text-cool-gray-500 text-xl">Buscando atributos...</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div x-show.transition.in="step === 3">
