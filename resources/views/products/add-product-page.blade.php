@@ -44,7 +44,7 @@
                                 </div>
 
                                 <div x-show="step === 3">
-                                    <div class="text-lg font-bold text-gray-700 leading-tight">Tell me about yourself</div>
+                                    <div class="text-lg font-bold text-gray-700 leading-tight">Configure os atributos</div>
                                 </div>
                             </div>
 
@@ -102,33 +102,35 @@
                         </div>
                         <div x-show.transition.in="step === 2">
                             <div class="mb-5">
-                                <p class="font-bold mb-1 text-gray-700 block">Sugestão de categoria</p>
+                                <p class="font-bold mb-1 text-gray-700 block">Seleciona a categoria que melhor se encaixa</p>
                                 <div class="flex items-start justify-center">
                                     <div class="text-gray-600 mt-2 mb-4">
                                         Para dar maior visibilidade ao seu produto <span class="font-medium">sugerimos que você aceite uma sugestão de categoria</span> para seu produto:
                                     </div>
-                                    <x-jet-button class="ml-2" wire:click="suggestCategory" wire:loading.attr="disabled">Sugerir</x-jet-button>
                                 </div>
                                 @unless(!$suggestedCategory)
-                                    <p class="font-bold mb-1 text-gray-700 blick">Sugestões</p>
-                                    <div class="text-gray-600 mt-2 mb-4">
-                                        <ul class="list-disc text-sm ml-4 mt-2">
-                                            @foreach($suggestedCategory as $suggestion)
-                                                <li>{{ $suggestion->getDomainName() }}</li>
-                                            @endforeach
-                                        </ul>
+                                    <div class="flex">
+                                        @foreach($suggestedCategory as $suggestion)
+                                            <label
+                                                class="flex justify-start items-center text-truncate rounded-lg bg-white pl-4 pr-6 py-3 shadow-sm mr-4">
+                                                <div class="text-teal-600 mr-3">
+                                                    <input
+                                                        wire:model="categoryID"
+                                                        type="radio"
+                                                        name="categoryID"
+                                                        value="{{ $suggestion->getCategoryId() }}"
+                                                        class="form-radio focus:outline-none focus:shadow-outline" />
+                                                </div>
+                                                <div class="select-none text-gray-700">{{ $suggestion->getDomainName() }}</div>
+                                            </label>
+                                        @endforeach
                                     </div>
                                 @endunless
-                            </div>
-
-                            <div class="mb-5">
-                                <p class="font-bold mb-1 text-gray-700 block">Categorias do seu produto</p>
-                                <!-- TODO: Criar interação de categorias -->
                             </div>
                         </div>
                         <div x-show.transition.in="step === 3">
                             <div class="mb-5">
-                                <label for="email" class="font-bold mb-1 text-gray-700 block">Gender</label>
+                                <label for="email" class="font-bold mb-1 text-gray-700 block">Condição</label>
 
                                 <div class="flex">
                                     <label
