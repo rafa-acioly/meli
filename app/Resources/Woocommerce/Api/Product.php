@@ -14,7 +14,7 @@ class Product extends AbstractApi
     public function find(string $sku): ProductEntity
     {
         $product = $this->client->get(self::ENDPOINT, ['sku' => $sku]);
-        return new ProductEntity($product[0]);
+        return new ProductEntity($product ? $product[0] : []);
     }
 
     /**

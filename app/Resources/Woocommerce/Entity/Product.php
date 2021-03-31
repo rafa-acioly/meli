@@ -4,14 +4,23 @@
 namespace App\Resources\Woocommerce\Entity;
 
 
-use App\Resources\Enum\ProductType;
 use Illuminate\Support\Collection;
 
 class Product extends AbstractEntity
 {
+    public string $sku;
+
     public string $name;
 
+    public $price;
+
+    public  $regularPrice;
+
+    public $salePrice;
+
     public string $type;
+
+    public string $description;
 
     /**
      * @var Collection<ProductDimensions>
@@ -28,6 +37,11 @@ class Product extends AbstractEntity
      */
     public array $categories = [];
 
+    public function exist(): bool
+    {
+        return !empty($this->sku);
+    }
+
     public function getStatus(): string
     {
         return $this->status == 'publish' ? 'active' : 'inactive';
@@ -41,5 +55,17 @@ class Product extends AbstractEntity
     public function setImages(array $images)
     {
         $this->images = collect($images)->map(fn($image) => new ProductImage($image));
+    }
+
+    public function setRegularPrice($price)
+    {
+        dd("regular" . $price);
+        $this->regularPrice = $price;
+    }
+
+    public function setSalePrice($price)
+    {
+        dd("sale" . $price);
+        $this->salePrice = $price;
     }
 }

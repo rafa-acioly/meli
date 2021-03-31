@@ -29,8 +29,16 @@ class AddProductPage extends Component
 
     public function updatedProductSKU(string $sku)
     {
+        $this->product = null;
+
         $wooCli = new Woocommerce(Auth::user()->credential);
         $product = $wooCli->product()->find($sku);
+
+        if (!$product->exist()) {
+            return $this->addError('productSKU', 'SKU não encontrado');
+        }
+
+        $this->resetValidation(['productSKU']);
         $this->product = (array)$product;
     }
 }

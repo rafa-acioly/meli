@@ -1,7 +1,7 @@
 <div>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Add Product') }}
+            {{ __('Integrar novo produto') }}
         </h2>
     </x-slot>
 
@@ -67,16 +67,8 @@
                                        wire:model="productSKU"
                                        class="w-full px-4 py-3 rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium"
                                        placeholder="Digite o código do produto em sua loja">
+                                <x-jet-input-error for="productSKU" class="mt-2" />
                             </div>
-
-                            @if(!is_null($product))
-                                <div class="mb-5">
-                                    <h1>{{ $product['name'] }}</h1>
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias autem debitis dignissimos,
-                                    dolore dolorem dolorum eaque eius quos saepe voluptas.
-                                    A assumenda corporis earum enim impedit itaque, libero necessitatibus sed.
-                                </div>
-                            @endunless
 
                             <div wire:loading.flex class="animate-pulse flex justify-center items-center">
                                 <div class="h-8 w-8 text-cool-gray-300 m-3">
@@ -86,6 +78,27 @@
                                 </div>
                                 <span class="font-medium py-5 text-cool-gray-500 text-xl">Buscando produto...</span>
                             </div>
+
+                            @if(!is_null($product))
+                                <main wire:loading.class="opacity-50" class="grid place-items-center bg-gray-100">
+                                    <section class="flex flex-col md:flex-row gap-11 py-10 px-5 bg-white rounded-md shadow-lg md:max-w-2xl">
+                                        <div class="text-indigo-500 flex flex-col justify-between">
+                                            <img src="{{ $product['images']->first()->src }}" alt="{{ $product['name'] }}" />
+                                        </div>
+                                        <div class="text-indigo-500">
+                                            <h3 class="uppercase text-black text-2xl font-medium">{{ $product['name'] }}</h3>
+                                            <h3 class="text-2xl font-semibold mb-7">R$ {{ $product['price'] }}</h3>
+                                            <small class="text-black">
+                                                @if(isset($product['description']))
+                                                    {!! $product['description'] !!}
+                                                @else
+                                                    <p class="text-red-600">Seu produto não possui descrição.</p>
+                                                @endif
+                                            </small>
+                                        </div>
+                                    </section>
+                                </main>
+                            @endunless
                         </div>
                         <div x-show.transition.in="step === 2">
 
