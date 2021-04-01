@@ -57,7 +57,7 @@ class AddProductPage extends Component
 
     public function updatedCategoryID($categoryID)
     {
-        $category = (new CategoryServiceAdapter())->findRequiredCategoryAttributes($categoryID);
+        $category = (new CategoryServiceAdapter())->findCategoryAttributes($categoryID);
         dd($category);
     }
 
